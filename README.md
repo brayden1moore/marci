@@ -1,8 +1,8 @@
 ---
 title: NFL Betting
 emoji: 🏈
-colorFrom: blue
-colorTo: red
+colorFrom: red
+colorTo: blue
 sdk: docker
 pinned: false
 ---
