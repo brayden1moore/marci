@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" type="image/x-icon" href="https://images.squarespace-cdn.com/content/v1/64790f5777b5d772678cce83/6d71eaee-f825-4324-be9b-2def32469eac/favicon.ico?format=100w">
+    <title>MARCI</title>
+</head>
+<style>
+    body {
+        background-color: black;
+        font-family: 'Segoe UI';
+        justify-content: center;
+        text-align: center;
+        padding: 5%;
+        padding-left: 10%;
+        padding-right: 10%;
+        padding-top: 2%;
+    }
+    p {
+        color: #f2f2f2;
+    }
+    h1 {
+        color: #f2f2f2;
+        margin-bottom: 10px;
+    }
+    h2 {
+        margin-top: 0px;
+        color: #f2f2f2;
+    }
+    h3 {
+        color: #f2f2f2;
+        margin: 0px;
+    }
+    table {
+        margin-top: 20px;
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+    }
+    th, td {
+        color: #f2f2f2;
+        border: 1px solid black;
+        text-align: center;
+        padding: 8px;
+    }
+    th {
+        background-color: black;
+    }
+    tr {
+        background-color: black;
+    }
+    tr:nth-child(even) {
+        background-color: rgb(10, 10, 5);
+    }
+    td img {
+        display: block;
+        margin: auto;
+    }
+    input[type="text"] {
+        font-size: 12pt;
+        width: 100px;
+        text-align: center;
+        background-color: transparent;
+        color: #f2f2f2;
+        border: 1px solid #464646;
+    }
+    button {
+        font-size: 12pt;
+        background-color: rgb(61, 61, 61);
+        color: #ffffff; 
+        padding: 10px 20px; 
+        border: none;
+        border-radius: 5px; 
+        margin-top: 40px;
+        width: 100%;
+        transition: all 0.3s ease;  
+    }
+    button:hover {
+        color: rgb(0, 0, 0);
+        background-color: rgb(255, 255, 255);
+    }
+    .winner-wrapper {
+        position: relative;
+        width: 100%;  
+        text-align: center; 
+    }
+    .winner-image {
+        width: 50px;
+        height: auto;
+        margin: auto;  
+        transition: opacity 0.3s ease;
+    }
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .winner-wrapper:hover .overlay {
+        opacity: 1;
+    }
+    .over-under-wrapper {
+        position: relative;
+        width: 100%;
+        height: 50px; 
+        display: flex;
+        align-items: center;  
+        justify-content: center; 
+        transition: opacity 0.3s ease;
+    }
+    .over-under-text {
+        display: inline-block;
+        margin: auto;
+    }
+    .over {
+        background-color: green;
+    }
+    .under {
+        background-color: red;
+    }
+    .na {
+        background-color: grey;
+    }
+    .over-under-wrapper .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .over-under-wrapper:hover .overlay {
+        opacity: 1;
+    }
+
+    .hidden {
+        opacity: 0;
+    }
+
+    .section-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .section {
+        padding: 30px;
+        text-align: left;
+        border-style: solid;
+        border-width: 1px;
+        border-color: rgb(61, 61, 61);
+        width: 48%; 
+    }
+
+    .content {
+        width: 100%;
+    }
+
+    .content img {
+        width: 100%;
+        height: auto;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .divider {
+        border: 0;
+        height: 1px;
+        background: rgb(61, 61, 61);
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+
+    .label {
+        color: rgb(114, 114, 114);
+    }
+
+    .info {
+        color: white;
+    }
+
+</style>
+<body>
+    <h1>M A R C I</h1>
+    <div class="info">
+        <span class="label">Winners:</span> 0-0<br>
+        <span class="label">Over/Unders:</span> 0-0<br>
+
+    <table id="gameTable">
+        <tr>
+            <th>Date</th>
+            <th>Away Team</th>
+            <th>Home Team</th>
+            <th>Over/Under Line</th>
+            <th>Predicted Winner</th>
+            <th>Predicted Over/Under</th>
+        </tr>
+    </table>
+
+    <button id="submitButton">
+        Predict
+    </button>
+
+    <hr class="divider"> 
+
+    <div id="modelDetails">
+        <h2>Model Details</h2>
+        <div class="section-container">
+            <div class="section">
+                <h3>Moneyline</h3>
+                <div class="info"></h3><span class="label">Test Accuracy:</span> 75.4%<br></div>
+                <div class="content">
+                    <img src="/static/xgboost_ML_75.4%_dark.png" alt="Moneyline Model">
+                    <div class="info">
+                        <span class="label">Model:</span> XGBoost<br>
+                        <span class="label">Train/Test Split:</span> 1782/199<br>
+                        <span class="label">Max Depth:</span> 2<br>
+                        <span class="label">Learning Rate:</span> 0.01<br>
+                        <span class="label">Epochs:</span> 500
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <h3>Over/Under</h3>
+                <div class="content">
+                    <div class="info"></h3><span class="label">Test Accuracy:</span> 59.3%<br></div>
+                    <img src="/static/xgboost_OU_59.3%_dark.png" alt="Over/Under Model">
+                    <div class="info">
+                        <span class="label">Model:</span> XGBoost<br>
+                        <span class="label">Train/Test Split:</span> 1782/199<br>
+                        <span class="label">Max Depth:</span> 6<br>
+                        <span class="label">Learning Rate:</span> 0.05<br>
+                        <span class="label">Epochs:</span> 300
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+    async function fetchGames() {
+    const response = await fetch('/get_games');
+    const games = await response.json();
+    const table = document.getElementById('gameTable');
+    const columns = ['Date','Away Team', 'Home Team']; 
+
+    games.forEach((game) => {
+        const row = table.insertRow(-1);
+        
+        columns.forEach((column) => {
+            const cell = row.insertCell(-1);
+            if (column === 'Away Team' || column === 'Home Team') {
+                const img = document.createElement('img');
+                img.src = `/static/${game[column]}.webp`;
+                img.alt = game[column];
+                img.width = 50; 
+                cell.appendChild(img);
+            } else {
+                cell.textContent = game[column];
+            }
+        });
+
+        for (let i = 0; i < 3; i++) {
+            const cell = row.insertCell(-1);
+            if (i<1) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                cell.appendChild(input);
+            }
+        }
+        });
+    }
+
+    fetchGames();
+
+
+    function submitData() {
+    const table = document.getElementById('gameTable');
+    const rows = table.querySelectorAll('tr');
+    const games = [];
+
+    rows.forEach((row, index) => {
+        if (index === 0) return;
+        const cells = row.querySelectorAll('td');
+        const game = {};
+
+        game.Date = cells[0].textContent;
+        game.AwayTeam = cells[1].querySelector('img').alt;
+        game.HomeTeam = cells[2].querySelector('img').alt;
+        game.OverUnderLine = cells[3].querySelector('input').value;
+
+        games.push(game);
+    });
+
+    fetch('/submit_games', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(games),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.moneylines && data.over_unders) {
+            const table = document.getElementById('gameTable');
+            const rows = table.querySelectorAll('tr');
+
+            data.moneylines.forEach((moneyline, index) => {
+                const row = rows[index + 1];
+                
+                const winnerCell = row.cells[row.cells.length - 2];
+                winnerCell.innerHTML = ''; 
+                
+                const wrapperDiv = document.createElement('div');
+                wrapperDiv.className = 'winner-wrapper';
+
+                const winnerImg = document.createElement('img');
+                winnerImg.src = `/static/${moneyline.Winner}.webp`;
+                winnerImg.alt = moneyline.Winner;
+                winnerImg.width = 50;  
+                winnerImg.className = 'winner-image hidden';
+                wrapperDiv.appendChild(winnerImg);
+
+                setTimeout(() => {
+                    winnerImg.classList.remove('hidden');
+                }, 10);
+
+                const winnerOverlayDiv = document.createElement('div');
+                winnerOverlayDiv.className = 'overlay';
+                winnerOverlayDiv.textContent = `${Math.round(moneyline.Probabilities[0] * 100)}%`;
+                wrapperDiv.appendChild(winnerOverlayDiv);
+                winnerCell.appendChild(wrapperDiv);
+
+                const overUnderCell = row.cells[row.cells.length - 1];
+                overUnderCell.innerHTML = ''; 
+
+                const overUnderDiv = document.createElement('div');
+                overUnderDiv.className = 'over-under-wrapper hidden';
+
+                const textDiv = document.createElement('div');
+                textDiv.className = 'over-under-text';
+                textDiv.textContent = data.over_unders[index]['Over/Under'];
+                if (textDiv.textContent === 'Over') {
+                    overUnderDiv.className += ' over';
+                } else if (textDiv.textContent === 'Under') {
+                    overUnderDiv.className += ' under';
+                } else {
+                    overUnderDiv.className += ' na';
+                }
+
+                overUnderDiv.appendChild(textDiv);
+
+                setTimeout(() => {
+                    overUnderDiv.classList.remove('hidden');
+                }, 10);
+
+                const overUnderOverlayDiv = document.createElement('div');
+                overUnderOverlayDiv.className = 'overlay';
+                overUnderOverlayDiv.textContent = `${Math.round(data.over_unders[index]['Probabilities'][0] * 100)}%`;
+                overUnderDiv.appendChild(overUnderOverlayDiv);
+
+                overUnderCell.appendChild(overUnderDiv);
+            });
+        }
+        });
+    }
+
+    document.getElementById('submitButton').addEventListener('click', submitData);
+
+    document.addEventListener('keydown', function(event) {
+    if (event.keyCode === 13) {  // 13 is the keyCode for the "Enter" key
+        submitData();
+    }
+});
+
+
+</script>
+
+</body>
+</html>
