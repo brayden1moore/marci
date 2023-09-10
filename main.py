@@ -1,16 +1,18 @@
 from Source.Predict import predict
 from flask import Flask, render_template, jsonify, request
 import requests
+import pickle as pkl
 import pandas as pd
 import numpy as np
 pd.set_option('display.max_columns', None)
 pd.set_option('display.expand_frame_repr', False)
 
-# update past picks
+# load past picks
 try:
-    predict.update_past_predictions()
-except KeyError as e:
-    print("Couldn't update past predictions.")
+    with open('predictions_this_year.pkl', 'rb') as f:
+        predictions_this_year = pkl.load(f)
+except:
+    predictions_this_year = {}
 
 # get week, season
 week, season = predict.get_week()
@@ -41,16 +43,22 @@ def submit_games():
     moneylines = []
     over_unders = []
     for row_index,home,away,total in zip(row_indices,home_teams,away_teams,ou_lines):
-        moneyline, over_under = predict.predict(home,away,season,week,total)
+        game_id, moneyline, over_under = predict.predict(home,away,season,week,total)
         moneyline['rowIndex'] = int(row_index)
         over_under['rowIndex'] = int(row_index)
         moneylines.append(moneyline)
         over_unders.append(over_under)
+        predictions_this_year[game_id] = {'Moneyline':moneyline,
+                                          'Over/Under':over_under}
 
     print('MoneyLines')
     print(moneylines)
     print('OverUnders')
     print(over_unders)
+
+    #with open('predictions_this_year.pkl', 'wb') as f:
+    #    pkl.dump(predictions_this_year, f)
+
     return jsonify({'moneylines': moneylines,
                     'over_unders': over_unders})
     

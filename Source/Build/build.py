@@ -1,4 +1,4 @@
-import nfl_data_py.nfl_data_py as nfl
+from nfl_data_py import nfl_data_py as nfl
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
@@ -11,7 +11,11 @@ current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
 data_directory = os.path.join(parent_directory, 'Data')
 
-def get_pbp_data(get_seasons=[], overwrite_seasons=[]):
+year = dt.datetime.now().year
+month = dt.datetime.now().month
+current_season = year if month in [8,9,10,11,12] else year-1
+
+def get_pbp_data(get_seasons=[]):
     """
     Pull data from nflFastR's Github repo. 
     If you choose to overwrite, it will replace the existing pbp data with the data you pull.
@@ -19,44 +23,19 @@ def get_pbp_data(get_seasons=[], overwrite_seasons=[]):
     """
     pbp = nfl.import_pbp_data(get_seasons)
     pbp['TOP_seconds'] = pbp['drive_time_of_possession'].apply(lambda x: int(x.split(':')[0]) * 60 + int(x.split(':')[1]) if pd.notnull(x) else 0)
-    
-    if overwrite_seasons:
-        file_path = os.path.join(data_directory, 'pbp.csv')
-        old = pd.read_csv(file_path, index_col=0, low_memory=False)
-        old = old.loc[~old['season'].isin(overwrite_seasons)]
-        pbp = pd.concat([old,pbp])
-        pbp.to_csv(file_path)
-
-        year = dt.datetime.now().year
-        month = dt.datetime.now().month
-        season = year if month in [8,9,10,11,12] else year-1
-        pbp_this_year = pbp.loc[pbp['season']==season]
-        file_path = os.path.join(data_directory, 'pbp_this_year.csv')
-        pbp_this_year.to_csv(file_path)
 
     return pbp
 
 
-def build_gbg_data(get_seasons=[], overwrite_seasons=[]):
+def build_gbg_data(get_seasons=[]):
     """
-    Using pbp.csv, build a game-by-game dataset to use for prediction models.
-    Populate update_seasons with the current year to only update this season's data while preserving historical data.
+    Build a game-by-game dataset to use for prediction models.
 
     """
     print('Loading play-by-play data.')
-
-    if overwrite_seasons:
-        print('Overwriting data for', overwrite_seasons)
-        pbp = get_pbp_data(get_seasons, overwrite_seasons)
-
-    if not overwrite_seasons:
-        file_path = os.path.join(data_directory, 'pbp.csv')
-        pbp = pd.read_csv(file_path, index_col=0)
-
-    pbp = pbp.loc[pbp['season'].isin(get_seasons)]
+    pbp = get_pbp_data(get_seasons)
     game_date_dict = dict(pbp[['game_id','game_date']].values)
     teams = list(set(list(pbp['home_team'].unique()) + list(pbp['away_team'].unique())))
-    print(teams)
     seasons = pbp['season'].unique()
     
     print('Building game-by-game data.')
@@ -134,9 +113,14 @@ def build_gbg_data(get_seasons=[], overwrite_seasons=[]):
             game = team.groupby('game_id').agg(features).reset_index()
             game[['W','L']] = game[['W','L']].expanding().sum()
             game[game.columns[4:]] = game[game.columns[4:]].expanding().mean()
-            game[game.columns[1:]] = game[game.columns[1:]].shift()
-            game['TEAM'] = team_name
-            game['Season'] = season
+            
+            if season != current_season:
+                game[game.columns[1:]] = game[game.columns[1:]].shift()
+                game['TEAM'] = team_name
+                game['Season'] = season
+            else:
+                game['TEAM'] = team_name
+                game['Season'] = season
 
             data = pd.concat([data,game])
 
@@ -149,25 +133,20 @@ def build_gbg_data(get_seasons=[], overwrite_seasons=[]):
     gbg.drop(columns=['TEAM','TEAM.Away','home_team.Away','away_team.Away','Season.Away','game_id.Away'], inplace=True)
     gbg['game_date'] = gbg['game_id'].map(game_date_dict)
 
-    if overwrite_seasons:
-        file_path = os.path.join(data_directory, 'gbg.csv')
-        old = pd.read_csv(file_path, index_col=0, low_memory=False)
-        old = old.loc[~old['Season'].isin(overwrite_seasons)]
-        gbg = pd.concat([old,gbg])
-        file_path = os.path.join(data_directory, 'gbg.csv')
-        gbg.to_csv(file_path)
-
-        year = dt.datetime.now().year
-        month = dt.datetime.now().month
-        season = year if month in [8,9,10,11,12] else year-1
-        gbg_this_year = gbg.loc[gbg['Season']==season]
+    # save current data 
+    if current_season in get_seasons:
+        gbg_this_year = gbg.loc[gbg['Season']==current_season]
         file_path = os.path.join(data_directory, 'gbg_this_year.csv')
-        gbg_this_year.to_csv(file_path)
+        gbg_this_year.to_csv(file_path, index=False)
 
-    return gbg
+    # save historical data 
+    if get_seasons != [current_season]:
+        gbg = gbg.loc[gbg['Season']!=current_season]
+        file_path = os.path.join(data_directory, 'gbg.csv')
+        gbg.to_csv(file_path, index=False)
 
 
-def add_odds_data(gbg, overwrite=False):
+def add_odds_data():
     """
     Get odds from Australian Sports Betting's free online dataset and merge it with game-by-game data.
 
@@ -192,15 +171,27 @@ def add_odds_data(gbg, overwrite=False):
     odds['Home Winnings'] = [ho-1 if h>a else -1 if a>h else 0 for ho,h,a in odds[['Home Odds Close','Home Score','Away Score']].values]
     odds['Away Winnings'] = [ao-1 if a>h else -1 if h>a else 0 for ao,h,a in odds[['Away Odds Close','Home Score','Away Score']].values]
 
-    # merge with gbg
-    gbg['Key'] = gbg['game_date'].astype(str) + gbg['home_team'] + gbg['away_team']
-    gbg_and_odds = gbg.merge(odds, left_on='Key', right_on='Key')
-    gbg_and_odds['Home-Team-Win'] = (gbg_and_odds['Home Score']>gbg_and_odds['Away Score']).astype(int)
-    gbg_and_odds['Over'] = ((gbg_and_odds['Home Score'] + gbg_and_odds['Away Score'])>gbg_and_odds['Total Score Close']).astype(int)
+    # load gbg data
+    file_path = os.path.join(data_directory, 'gbg.csv')
+    gbg = pd.read_csv(file_path)
+    file_path = os.path.join(data_directory, 'gbg_this_year.csv')
+    gbg_this_year = pd.read_csv(file_path)
+
+    # merge and save
+    dataframes = [gbg, gbg_this_year]
+    for idx in range(2):
+        i = dataframes[idx]
+        i['Key'] = i['game_date'].astype(str) + i['home_team'] + i['away_team']
+        gbg_and_odds = i.merge(odds, left_on='Key', right_on='Key')
+        gbg_and_odds['Home-Team-Win'] = (gbg_and_odds['Home Score']>gbg_and_odds['Away Score']).astype(int)
+        gbg_and_odds['Over'] = ((gbg_and_odds['Home Score'] + gbg_and_odds['Away Score'])>gbg_and_odds['Total Score Close']).astype(int)
+        
+        if idx==0:
+            file_path = os.path.join(data_directory, 'gbg_and_odds.csv')
+        else:
+            file_path = os.path.join(data_directory, 'gbg_and_odds_this_year.csv')           
+        
+        gbg_and_odds.to_csv(file_path, index=False)
     
-    if overwrite:
-        file_path = os.path.join(data_directory, 'gbg_and_odds.csv')
-        gbg_and_odds.to_csv(file_path)
-    
-    return gbg_and_odds
+
 

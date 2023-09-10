@@ -12,8 +12,8 @@ data_directory = os.path.join(parent_directory, 'Data')
 model_directory = os.path.join(parent_directory, 'Models')
 pickle_directory = os.path.join(parent_directory, 'Pickles')
 
-file_path = os.path.join(data_directory, 'pbp_this_year.csv')
-pbp = pd.read_csv(file_path, index_col=0, low_memory=False)
+file_path = os.path.join(data_directory, 'gbg_this_year.csv')
+gbg = pd.read_csv(file_path, low_memory=False)
 
 # get team abbreviations
 file_path = os.path.join(pickle_directory, 'team_name_to_abbreviation.pkl')
@@ -57,101 +57,33 @@ def get_games():
     return df[['Away Team','Home Team','Date']]
 
 
-def get_one_week(team_name,season,week):
-    # create columns
-    team = pbp.loc[((pbp['home_team']==team_name) | (pbp['away_team']==team_name)) & (pbp['season']==season)] 
-    team['GP'] = team['week']
-    team['W'] = [1 if r>0 and team_name==h else 1 if r<0 and team_name==a else 0 for r,a,h in team[['result','away_team','home_team']].values]
-    team['L'] = [0 if r>0 and team_name==h else 0 if r<0 and team_name==a else 1 for r,a,h in team[['result','away_team','home_team']].values]
-    team['W_PCT'] = team['W']/team['GP']
-    team['TOP'] = [t if team_name==p else 0 for t,p in team[['TOP_seconds','posteam']].values]
-    team['FGA'] = [1 if team_name==p and f==1 else 0 for p,f in team[['posteam','field_goal_attempt']].values]
-    team['FGM'] = [1 if team_name==p and f=='made' else 0 for p,f in team[['posteam','field_goal_result']].values]
-    team['FG_PCT'] = team['FGM']/team['FGA']
-    team['PassTD'] = np.where((team['posteam'] == team_name) & (team['pass_touchdown'] == 1), 1, 0)
-    team['RushTD'] = np.where((team['posteam'] == team_name) & (team['rush_touchdown'] == 1), 1, 0)
-    team['PassTD_Allowed'] = np.where((team['defteam'] == team_name) & (team['pass_touchdown'] == 1), 1, 0)
-    team['RushTD_Allowed'] = np.where((team['defteam'] == team_name) & (team['rush_touchdown'] == 1), 1, 0)
-    team['PassYds'] = [y if p==team_name else 0 for p,y in team[['posteam','passing_yards']].values]
-    team['RushYds'] = [y if p==team_name else 0 for p,y in team[['posteam','rushing_yards']].values]
-    team['PassYds_Allowed'] = [y if d==team_name else 0 for d,y in team[['defteam','passing_yards']].values]
-    team['RushYds_Allowed'] = [y if d==team_name else 0 for d,y in team[['defteam','rushing_yards']].values]
-    team['Fum'] = np.where((team['defteam'] == team_name) & (team['fumble_lost'] == 1), 1, 0)
-    team['Fum_Allowed'] = np.where((team['posteam'] == team_name) & (team['fumble_lost'] == 1), 1, 0)
-    team['INT'] = np.where((team['defteam'] == team_name) & (team['interception'] == 1), 1, 0)
-    team['INT_Allowed'] = np.where((team['posteam'] == team_name) & (team['interception'] == 1), 1, 0)
-    team['Sacks'] = np.where((team['defteam'] == team_name) & (team['sack'] == 1), 1, 0)
-    team['Sacks_Allowed'] = np.where((team['posteam'] == team_name) & (team['sack'] == 1), 1, 0)
-    team['Penalties'] = np.where((team['penalty_team'] == team_name), 1, 0)
-    team['FirstDowns'] = [1 if team_name==p and f==1 else 0 for p,f in team[['posteam','first_down']].values]
-    team['3rdDownConverted'] = [1 if p==team_name and t==1 else 0 for p,t in team[['posteam','third_down_converted']].values]
-    team['3rdDownFailed'] = [1 if p==team_name and t==1 else 0 for p,t in team[['posteam','third_down_failed']].values]
-    team['3rdDownAllowed'] = [1 if d==team_name and t==1 else 0 for d,t in team[['defteam','third_down_converted']].values]
-    team['3rdDownDefended'] = [1 if d==team_name and t==1 else 0 for d,t in team[['defteam','third_down_failed']].values]
-    team['PTS'] = [ap if at==team_name else hp if ht==team_name else None for ht,at,hp,ap in team[['home_team','away_team','home_score','away_score']].values]
-    team['PointDiff'] = [r if team_name==h else -r if team_name==a else 0 for r,a,h in team[['result','away_team','home_team']].values]
+def get_one_week(home,away,season,week):
+    try:
+        home_df = gbg.loc[((gbg['away_team']==home) | (gbg['home_team']==home)) & (gbg['Season']==season) & (gbg['GP']==week-1)]
+        home_df = home_df[[i for i in home_df.columns if '.Away' not in i] if home_df['home_team'].item()==home else [i for i in home_df.columns if '.Away' in i]]
+        home_df.columns = [i.replace('.Away','') for i in home_df.columns]
 
-    # aggregate from play-by-play to game-by-game
-    features = {
-        'GP':'mean',
-        'W':'mean',
-        'L':'mean',
-        'W_PCT':'mean',
-        'TOP':'sum',
-        'FGA':'sum',
-        'FGM':'sum',
-        'FG_PCT':'mean',
-        'PassTD':'sum',
-        'RushTD':'sum',
-        'PassTD_Allowed':'sum',
-        'RushTD_Allowed':'sum',
-        'PassYds':'sum',
-        'RushYds':'sum',
-        'PassYds_Allowed':'sum',
-        'RushYds_Allowed':'sum',
-        'Fum':'sum',
-        'Fum_Allowed':'sum',
-        'INT':'sum',
-        'INT_Allowed':'sum',
-        'Sacks':'sum',
-        'Sacks_Allowed':'sum',
-        'Penalties':'sum',
-        'FirstDowns':'sum',
-        '3rdDownConverted':'sum',
-        '3rdDownFailed':'sum',
-        '3rdDownAllowed':'sum',
-        '3rdDownDefended':'sum',
-        'PTS':'mean',
-        'PointDiff':'mean'
-    }
-    game = team.groupby('game_id').agg(features).reset_index()
-    game[['W','L']] = game[['W','L']].expanding().sum()
-    game[game.columns[4:]] = game[game.columns[4:]].expanding().mean()
-    game['TEAM'] = team_name
-    game['Season'] = season
-    return game.loc[game['GP']==week-1]
+        away_df = gbg.loc[((gbg['away_team']==away) | (gbg['home_team']==away)) & (gbg['Season']==season) & (gbg['GP']==week-1)]
+        away_df = away_df[[i for i in away_df.columns if '.Away' not in i] if away_df['home_team'].item()==away else [i for i in away_df.columns if '.Away' in i]]
+        away_df.columns = [i.replace('.Away','') + '.Away' for i in away_df.columns]
 
-
-def get_one_week_home_and_away(home,away,season,week):
-    home = get_one_week(home,season,week)
-    away = get_one_week(away,season,week)
-    away.columns = [f'{i}.Away' for i in away.columns]
-    gbg = home.merge(away,left_index=True,right_index=True)
-    gbg.drop(columns=['TEAM','TEAM.Away','Season.Away','game_id.Away'], inplace=True)
-    return gbg.fillna(0)
+        drop_columns = ['game_id', 'Season', 'home_team', 'away_team', 'game_date']
+        df = home_df.merge(away_df, left_on='GP', right_on='GP.Away').drop(columns=drop_columns)
+        return df
+    except ValueError:
+        return pd.DataFrame()
 
 
 def predict(home,away,season,week,total):
     # finish preparing data
     home_abbrev = team_name_to_abbreviation[home]
     away_abbrev = team_name_to_abbreviation[away]
-    gbg = get_one_week_home_and_away(home_abbrev,away_abbrev,season,week)
-    gbg['Total Score Close'] = total
-    print(gbg)
-    matrix = xgb.DMatrix(gbg.drop(columns=['game_id','Season']).astype(float).values)
+    data = get_one_week(home_abbrev,away_abbrev,season,week)
+    data['Total Score Close'] = total
+    matrix = xgb.DMatrix(data.astype(float).values)
 
     # moneyline
-    model = 'xgboost_ML_75.4%'
+    model = 'xgboost_ML_no_odds_69.8%'
     file_path = os.path.join(model_directory, f'{model}.json')
     xgb_ml = xgb.Booster()
     xgb_ml.load_model(file_path)
@@ -166,7 +98,7 @@ def predict(home,away,season,week,total):
                      'Probabilities':['N/A']}
 
     # over/under
-    model = 'xgboost_OU_59.3%'
+    model = 'xgboost_OU_no_odds_60.8%'
     file_path = os.path.join(model_directory, f'{model}.json')
     xgb_ou = xgb.Booster()
     xgb_ou.load_model(file_path)
@@ -179,25 +111,6 @@ def predict(home,away,season,week,total):
         over_under = {'Over/Under': 'N/A',
                       'Probability': ['N/A']}
     
-    return moneyline, over_under
-
-
-def update_past_predictions():
-    file_path = os.path.join(data_directory, 'gbg_and_odds_this_year.csv')
-    gbg_and_odds_this_year = pd.read_csv(file_path, index_col=0, low_memory=False)
-    total_dict = dict(gbg_and_odds_this_year[['game_id','Total Score Close']])
-    games = pbp.drop_duplicates(subset='game_id')
-
-    predictions = {}
-    for _, i in games.iterrows():
-        game_id = i['game_id']
-        home = i['home_team']
-        away = i['away_team']
-        week = i['week']
-        season = i['season']
-        total = total_dict[game_id]
-        predictions[game_id] = predict(home,away,season,week,total)
-
-    predictions_df = pd.DataFrame(predictions)
-    file_path = os.path.join(data_directory, 'predictions_this_year.csv')
-    predictions_df.to_csv(file_path)
+    # create game id to save predictions
+    game_id = str(season) + '_' + str(week) + '_' + away + '_' + home
+    return game_id, moneyline, over_under

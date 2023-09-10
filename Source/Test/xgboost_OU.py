@@ -4,7 +4,7 @@ import pickle as pkl
 import numpy as np
 import os
 
-model = 'xgboost_OU_59.3%'
+model = 'xgboost_OU_no_odds_60.8%'
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
@@ -16,14 +16,14 @@ file_path = os.path.join(model_directory, f'{model}.json')
 xgb_ou = xgb.Booster()
 xgb_ou.load_model(file_path)
 
-file_path = os.path.join(pickle_directory, 'test_games_OU.pkl')
+file_path = os.path.join(pickle_directory, 'test_games_OU_no_odds.pkl')
 with open(file_path,'rb') as f:
     test_games = pkl.load(f).tolist()
 
 file_path = os.path.join(data_directory, 'gbg_and_odds.csv')
-gbg_and_odds = pd.read_csv(file_path, index_col=0)
+gbg_and_odds = pd.read_csv(file_path)
 test_data = gbg_and_odds.loc[gbg_and_odds['game_id'].isin(test_games)]
-test_data_matrix = xgb.DMatrix(test_data.drop(columns=['game_id','Over','Home-Team-Win','Season','home_team','away_team','game_date','Key','Home Score','Away Score','Home Odds Close','Away Odds Close','Home Winnings','Away Winnings']).astype(float).values)
+test_data_matrix = xgb.DMatrix(test_data.drop(columns=['game_id','Over','Home-Team-Win','Season','home_team','away_team','game_date','Key','Home Score','Away Score','Home Odds Close','Away Odds Close','Home Winnings','Away Winnings','Away Odds','Home Odds']).astype(float).values)
 
 predicted_probas = xgb_ou.predict(test_data_matrix)
 predictions = np.argmax(predicted_probas, axis=1)
@@ -31,7 +31,7 @@ test_data['predicted_proba'] = [i[1] for i in predicted_probas]
 test_data['prediction'] = (test_data['predicted_proba']>0.5).astype(int)
 test_data['correct'] = test_data['Over']==test_data['prediction']
 
-bets = test_data#.loc[(test_data['predicted_proba']>0.6) | (test_data['predicted_proba']<0.4)]
+bets = test_data.loc[(test_data['predicted_proba']>0.6) | (test_data['predicted_proba']<0.4)]
 bets['winnings'] = [0.91 if c else -1 for c in bets[['correct']].values]
 
 import matplotlib.pyplot as plt
