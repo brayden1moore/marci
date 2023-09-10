@@ -8,3 +8,4 @@ numpy==1.25.1
 matplotlib==3.7.1
 tqdm==4.65.0
 lxml==4.9.2
+google-cloud-storage==2.10.0

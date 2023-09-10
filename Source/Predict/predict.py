@@ -6,6 +6,7 @@ import os
 import requests
 from bs4 import BeautifulSoup
 
+# set dirs for other files
 current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
 data_directory = os.path.join(parent_directory, 'Data')
