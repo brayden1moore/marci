@@ -31,6 +31,7 @@ def get_games():
 @app.route('/submit_games', methods=['POST'])
 def submit_games():
     data = request.json
+    print(data)
     data = pd.DataFrame(data).replace('', np.nan).dropna()
     home_teams = data['HomeTeam'].values
     away_teams = data['AwayTeam'].values
@@ -43,6 +44,8 @@ def submit_games():
         moneylines.append(moneyline)
         over_unders.append(over_under)
 
+    #moneyline['rowIndex'] = row_index
+    #over_under['rowIndex'] = row_index
     print('MoneyLines')
     print(moneylines)
     print('OverUnders')
