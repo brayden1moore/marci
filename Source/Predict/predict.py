@@ -129,7 +129,7 @@ def get_one_week(team_name,season,week):
     game[game.columns[4:]] = game[game.columns[4:]].expanding().mean()
     game['TEAM'] = team_name
     game['Season'] = season
-    return game.loc[game['GP']==week].fillna(0)
+    return game.loc[game['GP']==week]
 
 
 def get_one_week_home_and_away(home,away,season,week):
@@ -138,7 +138,7 @@ def get_one_week_home_and_away(home,away,season,week):
     away.columns = [f'{i}.Away' for i in away.columns]
     gbg = home.merge(away,left_index=True,right_index=True)
     gbg.drop(columns=['TEAM','TEAM.Away','Season.Away','game_id.Away'], inplace=True)
-    return gbg
+    return gbg.fillna(0)
 
 
 def predict(home,away,season,week,total):
@@ -147,7 +147,7 @@ def predict(home,away,season,week,total):
     away_abbrev = team_name_to_abbreviation[away]
     gbg = get_one_week_home_and_away(home_abbrev,away_abbrev,season,week)
     gbg['Total Score Close'] = total
-
+    gbg['PassTD'] = 1000
     print(gbg)
     matrix = xgb.DMatrix(gbg.drop(columns=['game_id','Season']).astype(float).values)
 
