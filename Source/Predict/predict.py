@@ -113,5 +113,5 @@ def predict(home,away,season,week,total):
                       'Probability': ['N/A']}
     
     # create game id to save predictions
-    game_id = str(season) + '_' + str(week) + '_' + away + '_' + home
+    game_id = str(season) + '_' + str(week) + '_' + away_abbrev + '_' + home_abbrev
     return game_id, moneyline, over_under
