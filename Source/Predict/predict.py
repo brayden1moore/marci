@@ -157,7 +157,7 @@ def predict(home,away,season,week,total):
     xgb_ml.load_model(file_path)
     try:
         ml_predicted_proba = xgb_ml.predict(matrix)[0][1]
-        winner_proba = max([ml_predicted_proba, 1-ml_predicted_proba])
+        winner_proba = max([ml_predicted_proba, 1-ml_predicted_proba]).item()
         moneyline = {'Winner': [home if ml_predicted_proba>0.6 else away if ml_predicted_proba<0.4 else 'Toss-Up'],
                      'Probabilities':[winner_proba]}
     except:
@@ -170,7 +170,7 @@ def predict(home,away,season,week,total):
     xgb_ou = xgb.Booster()
     xgb_ou.load_model(file_path)
     try:
-        ou_predicted_proba = xgb_ou.predict(matrix)[0][1]
+        ou_predicted_proba = xgb_ou.predict(matrix)[0][1].item()
         over_under = {'Over/Under': ['Over' if ou_predicted_proba>0.5 else 'Under'],
                       'Probability': [ou_predicted_proba]}
     except:
