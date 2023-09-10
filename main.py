@@ -40,7 +40,11 @@ def submit_games():
         moneyline, over_under = predict.predict(home,away,season,week,total)
         moneylines.append(moneyline)
         over_unders.append(over_under)
-    
+
+    print('MoneyLines')
+    print(moneylines)
+    print('OverUnders')
+    print(over_unders)
     return jsonify({'moneylines': moneylines,
                     'over_unders': over_unders})
     
