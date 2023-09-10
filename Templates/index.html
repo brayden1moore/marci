@@ -221,7 +221,7 @@
                 <h3>Moneyline</h3>
                 <div class="info"></h3><span class="label">Test Accuracy:</span> 75.4%<br></div>
                 <div class="content">
-                    <img src="/Static/xgboost_ML_75.4%_dark.png" alt="Moneyline Model">
+                    <img src="/static/xgboost_ML_75.4%_dark.png" alt="Moneyline Model">
                     <div class="info">
                         <span class="label">Model:</span> XGBoost<br>
                         <span class="label">Train/Test Split:</span> 1782/199<br>
@@ -235,7 +235,7 @@
                 <h3>Over/Under</h3>
                 <div class="content">
                     <div class="info"></h3><span class="label">Test Accuracy:</span> 59.3%<br></div>
-                    <img src="/Static/xgboost_OU_59.3%_dark.png" alt="Over/Under Model">
+                    <img src="/static/xgboost_OU_59.3%_dark.png" alt="Over/Under Model">
                     <div class="info">
                         <span class="label">Model:</span> XGBoost<br>
                         <span class="label">Train/Test Split:</span> 1782/199<br>
@@ -327,7 +327,7 @@
                 wrapperDiv.className = 'winner-wrapper';
 
                 const winnerImg = document.createElement('img');
-                winnerImg.src = `/Static/${moneyline.Winner}.webp`;
+                winnerImg.src = `/static/${moneyline.Winner}.webp`;
                 winnerImg.alt = moneyline.Winner;
                 winnerImg.width = 50;  
                 winnerImg.className = 'winner-image hidden';
