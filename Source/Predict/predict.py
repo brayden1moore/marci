@@ -171,9 +171,10 @@ def predict(home,away,season,week,total):
     xgb_ou = xgb.Booster()
     xgb_ou.load_model(file_path)
     try:
-        ou_predicted_proba = xgb_ou.predict(matrix)[0][1].item()
+        ou_predicted_proba = xgb_ou.predict(matrix)[0][1]
+        ou_proba = max([ou_predicted_proba, 1-ou_predicted_proba]).item()
         over_under = {'Over/Under': ['Over' if ou_predicted_proba>0.5 else 'Under'],
-                      'Probability': [ou_predicted_proba]}
+                      'Probability': [ou_proba]}
     except:
         over_under = {'Over/Under': 'N/A',
                       'Probabilities': ['N/A']}
