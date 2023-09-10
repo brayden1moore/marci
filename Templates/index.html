@@ -368,7 +368,7 @@
 
                 const overUnderOverlayDiv = document.createElement('div');
                 overUnderOverlayDiv.className = 'overlay';
-                overUnderOverlayDiv.textContent = `${Math.round(data.over_unders[index]['Probabilities'][0] * 100)}%`;
+                overUnderOverlayDiv.textContent = `${Math.round(data.over_unders[index]['Probability'][0] * 100)}%`;
                 overUnderDiv.appendChild(overUnderOverlayDiv);
 
                 overUnderCell.appendChild(overUnderDiv);
