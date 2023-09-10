@@ -31,8 +31,8 @@ def get_games():
 @app.route('/submit_games', methods=['POST'])
 def submit_games():
     data = request.json
-    print(data)
     data = pd.DataFrame(data).replace('', np.nan).dropna()
+    print(data)
     home_teams = data['HomeTeam'].values
     away_teams = data['AwayTeam'].values
     ou_lines = data['OverUnderLine'].values
