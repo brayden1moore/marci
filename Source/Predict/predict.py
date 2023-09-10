@@ -129,7 +129,7 @@ def get_one_week(team_name,season,week):
     game[game.columns[4:]] = game[game.columns[4:]].expanding().mean()
     game['TEAM'] = team_name
     game['Season'] = season
-    return game.loc[game['GP']==week]
+    return game.loc[game['GP']==week].fillna(0)
 
 
 def get_one_week_home_and_away(home,away,season,week):
