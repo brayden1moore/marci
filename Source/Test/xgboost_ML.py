@@ -4,7 +4,7 @@ import pickle as pkl
 import numpy as np
 import os
 
-model = 'xgboost_ML_no_odds_69.8%'
+model = 'xgboost_ML_no_odds_71.4%'
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
