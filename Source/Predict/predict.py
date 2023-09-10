@@ -177,7 +177,7 @@ def predict(home,away,season,week,total):
                       'Probability': [ou_proba]}
     except:
         over_under = {'Over/Under': 'N/A',
-                      'Probabilities': ['N/A']}
+                      'Probability': ['N/A']}
     
     return moneyline, over_under
 
