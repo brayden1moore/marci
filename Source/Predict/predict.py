@@ -158,6 +158,7 @@ def predict(home,away,season,week,total):
     xgb_ml.load_model(file_path)
     try:
         ml_predicted_proba = xgb_ml.predict(matrix)[0][1]
+        print(ml_predicted_proba)
         winner_proba = max([ml_predicted_proba, 1-ml_predicted_proba]).item()
         moneyline = {'Winner': [home if ml_predicted_proba>0.6 else away if ml_predicted_proba<0.4 else 'Toss-Up'],
                      'Probabilities':[winner_proba]}
