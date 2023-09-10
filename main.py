@@ -13,7 +13,7 @@ except KeyError as e:
 # get week, season
 week, season = predict.get_week()
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="Templates", static_folder="Static")
 app.secret_key = 'green-flounder'
 
 games = predict.get_games()[['Date','Away Team','Home Team']]
