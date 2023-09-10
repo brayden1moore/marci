@@ -148,6 +148,7 @@ def predict(home,away,season,week,total):
     gbg = get_one_week_home_and_away(home_abbrev,away_abbrev,season,week)
     gbg['Total Score Close'] = total
 
+    print(gbg)
     matrix = xgb.DMatrix(gbg.drop(columns=['game_id','Season']).astype(float).values)
 
     # moneyline
