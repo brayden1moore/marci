@@ -13,8 +13,7 @@ from google.cloud import storage
 
 # authenticate gcp
 gcp_sa_key = json.loads(os.environ.get('GCP_SA_KEY'))
-print(gcp_sa_key)
-print(gcp_sa_key.keys())
+gcp_sa_key['private_key'] = gcp_sa_key['private_key'].replace('\\n', '\n')
 client = storage.Client.from_service_account_info(gcp_sa_key)
 bucket = client.get_bucket('bmllc-marci-data-bucket')
 
