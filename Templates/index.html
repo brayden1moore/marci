@@ -300,7 +300,7 @@
         game.AwayTeam = cells[1].querySelector('img').alt;
         game.HomeTeam = cells[2].querySelector('img').alt;
         game.OverUnderLine = cells[3].querySelector('input').value;
-
+        game.rowIndex = index - 1;  
         games.push(game);
     });
 
@@ -318,7 +318,7 @@
             const rows = table.querySelectorAll('tr');
 
             data.moneylines.forEach((moneyline, index) => {
-                const row = rows[index + 1];
+                const row = rows[data.moneylines[index].rowIndex + 1];
                 
                 const winnerCell = row.cells[row.cells.length - 2];
                 winnerCell.innerHTML = ''; 
