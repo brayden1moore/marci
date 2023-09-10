@@ -3,6 +3,8 @@ from flask import Flask, render_template, jsonify, request
 import requests
 import pandas as pd
 import numpy as np
+pd.set_option('display.max_columns', None)
+pd.set_option('display.expand_frame_repr', False)
 
 # update past picks
 try:
