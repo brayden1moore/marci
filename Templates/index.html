@@ -318,7 +318,7 @@
             const rows = table.querySelectorAll('tr');
 
             data.moneylines.forEach((moneyline, index) => {
-                const row = rows[data.moneylines[index].rowIndex + 1];
+                const row = rows[data.moneyline.rowIndex + 1];
                 
                 const winnerCell = row.cells[row.cells.length - 2];
                 winnerCell.innerHTML = ''; 
