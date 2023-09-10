@@ -42,8 +42,8 @@ def submit_games():
     over_unders = []
     for row_index,home,away,total in zip(row_indices,home_teams,away_teams,ou_lines):
         moneyline, over_under = predict.predict(home,away,season,week,total)
-        moneyline['rowIndex'] = str(row_index)
-        over_under['rowIndex'] = str(row_index)
+        moneyline['rowIndex'] = int(row_index)
+        over_under['rowIndex'] = int(row_index)
         moneylines.append(moneyline)
         over_unders.append(over_under)
 
