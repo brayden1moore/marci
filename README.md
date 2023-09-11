@@ -1,6 +1,6 @@
 ---
 title: NFL Betting
-emoji: 🏈
+emoji: 🏈📈
 colorFrom: red
 colorTo: blue
 sdk: docker
