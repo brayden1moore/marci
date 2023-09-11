@@ -82,11 +82,13 @@
         position: relative;
         width: 100%;  
         text-align: center; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     .winner-image {
-        width: 50px;
         height: auto;
-        margin: auto;  
+        margin: 0;
         transition: opacity 0.3s ease;
     }
     .overlay {
@@ -95,7 +97,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
+        background-color: rgba(0, 0, 0, 0.9);
         color: white;
         display: flex;
         justify-content: center;
@@ -117,23 +119,25 @@
     }
     .over-under-text {
         display: inline-block;
-        margin: auto;
+        margin: 0;
+        margin-right: 2px;
+        font-weight: bold;
     }
     .over {
-        background-color: green;
+        color: green;
     }
     .under {
-        background-color: red;
+        color: red;
     }
     .na {
-        background-color: grey;
+        color: white;
     }
     .over-under-wrapper .overlay {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
+        background-color: rgba(0, 0, 0, 0.9);
         color: white;
         display: flex;
         justify-content: center;
@@ -259,36 +263,36 @@
 
     <script>
     async function fetchGames() {
-    const response = await fetch('/get_games');
-    const games = await response.json();
-    const table = document.getElementById('gameTable');
-    const columns = ['Date','Away Team', 'Home Team']; 
+        const response = await fetch('/get_games');
+        const pulled_games = await response.json();
+        const table = document.getElementById('gameTable');
+        const columns = ['Date','Away Team', 'Home Team']; 
 
-    games.forEach((game) => {
-        const row = table.insertRow(-1);
-        
-        columns.forEach((column) => {
-            const cell = row.insertCell(-1);
-            if (column === 'Away Team' || column === 'Home Team') {
-                const img = document.createElement('img');
-                img.src = `/Static/${game[column]}.webp`;
-                img.alt = game[column];
-                img.width = 50; 
-                cell.appendChild(img);
-            } else {
-                cell.textContent = game[column];
-            }
-        });
+        pulled_games.forEach((game) => {
+            const row = table.insertRow(-1);
+            
+            columns.forEach((column) => {
+                const cell = row.insertCell(-1);
+                if (column === 'Away Team' || column === 'Home Team') {
+                    const img = document.createElement('img');
+                    img.src = `/Static/${game[column]}.webp`;
+                    img.alt = game[column];
+                    img.width = 50; 
+                    cell.appendChild(img);
+                } else {
+                    cell.textContent = game[column];
+                }
+            });
 
-        for (let i = 0; i < 3; i++) {
-            const cell = row.insertCell(-1);
-            if (i<1) {
-                const input = document.createElement('input');
-                input.type = 'text';
-                cell.appendChild(input);
+            for (let i = 0; i < 3; i++) {
+                const cell = row.insertCell(-1);
+                if (i<1) {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    cell.appendChild(input);
+                }
             }
-        }
-        });
+            });
     }
 
     fetchGames();
@@ -341,6 +345,18 @@
                 winnerImg.className = 'winner-image hidden';
                 wrapperDiv.appendChild(winnerImg);
 
+                const winnerEmojiDiv = document.createElement('div');
+                winnerEmojiDiv.className = 'emoji';
+                if (moneyline.Winner === moneyline.Result) {
+                    winnerEmojiDiv.textContent = '✅';
+                } else {
+                    winnerEmojiDiv.textContent = '❌';
+                }
+                if (moneyline.Result === 'N/A') {
+                    winnerEmojiDiv.textContent = '';
+                }
+                wrapperDiv.appendChild(winnerEmojiDiv);
+
                 setTimeout(() => {
                     winnerImg.classList.remove('hidden');
                 }, 10);
@@ -370,6 +386,18 @@
 
                 overUnderDiv.appendChild(textDiv);
 
+                const overEmojiDiv = document.createElement('div');
+                overEmojiDiv.className = 'emoji';
+                if (data.over_unders[index]['Over/Under'] === data.over_unders[index]['Result']) {
+                    overEmojiDiv.textContent = '✅';
+                } else {
+                    overEmojiDiv.textContent = '❌';
+                }
+                if (data.over_unders[index]['Result'] === 'N/A') {
+                    overEmojiDiv.textContent = '';
+                }
+                overUnderDiv.appendChild(overEmojiDiv);
+
                 setTimeout(() => {
                     overUnderDiv.classList.remove('hidden');
                 }, 10);
@@ -380,6 +408,7 @@
                 overUnderDiv.appendChild(overUnderOverlayDiv);
 
                 overUnderCell.appendChild(overUnderDiv);
+            
             });
         }
         });

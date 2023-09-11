@@ -16,6 +16,9 @@ pickle_directory = os.path.join(parent_directory, 'Pickles')
 file_path = os.path.join(data_directory, 'gbg_this_year.csv')
 gbg = pd.read_csv(file_path, low_memory=False)
 
+file_path = os.path.join(data_directory, 'results.csv')
+results = pd.read_csv(file_path, low_memory=False)
+
 # get team abbreviations
 file_path = os.path.join(pickle_directory, 'team_name_to_abbreviation.pkl')
 with open(file_path, 'rb') as f:
@@ -77,41 +80,68 @@ def get_one_week(home,away,season,week):
 
 def predict(home,away,season,week,total):
     # finish preparing data
-    home_abbrev = team_name_to_abbreviation[home]
-    away_abbrev = team_name_to_abbreviation[away]
+    if len(home)>4:
+        home_abbrev = team_name_to_abbreviation[home]
+    else:
+        home_abbrev = home
+
+    if len(away)>4:
+        away_abbrev = team_name_to_abbreviation[away]
+    else:
+        away_abbrev = away
+
     data = get_one_week(home_abbrev,away_abbrev,season,week)
     data['Total Score Close'] = total
     matrix = xgb.DMatrix(data.astype(float).values)
 
+    # create game id 
+    game_id = str(season) + '_0' + str(week) + '_' + away_abbrev + '_' + home_abbrev
+
     # moneyline
-    model = 'xgboost_ML_no_odds_69.8%'
+    model = 'xgboost_ML_no_odds_71.4%'
     file_path = os.path.join(model_directory, f'{model}.json')
     xgb_ml = xgb.Booster()
     xgb_ml.load_model(file_path)
+
+    try:
+        moneyline_result = results.loc[results['game_id']==game_id, 'winner'].item()
+    except:
+        moneyline_result = 'N/A'
+
     try:
         ml_predicted_proba = xgb_ml.predict(matrix)[0][1]
-        print(xgb_ml.predict(matrix))
         winner_proba = max([ml_predicted_proba, 1-ml_predicted_proba]).item()
-        moneyline = {'Winner': [home if ml_predicted_proba>0.6 else away if ml_predicted_proba<0.4 else 'Toss-Up'],
-                     'Probabilities':[winner_proba]}
+        moneyline = {'Winner': [home if ml_predicted_proba>0.5 else away if ml_predicted_proba<0.5 else 'Toss-Up'],
+                     'Probabilities':[winner_proba],
+                     'Result': moneyline_result}
     except:
         moneyline = {'Winner': 'NA',
-                     'Probabilities':['N/A']}
+                     'Probabilities':['N/A'],
+                     'Result': moneyline_result}
 
     # over/under
     model = 'xgboost_OU_no_odds_60.8%'
     file_path = os.path.join(model_directory, f'{model}.json')
     xgb_ou = xgb.Booster()
     xgb_ou.load_model(file_path)
+    
+    try:
+        result = results.loc[results['game_id']==game_id, 'total'].item()
+        over_under_result = 'Over' if float(result)>float(total) else 'Under'
+    except:
+        over_under_result = 'N/A'
+    
     try:
         ou_predicted_proba = xgb_ou.predict(matrix)[0][1]
         ou_proba = max([ou_predicted_proba, 1-ou_predicted_proba]).item()
+
         over_under = {'Over/Under': ['Over' if ou_predicted_proba>0.5 else 'Under'],
-                      'Probability': [ou_proba]}
+                      'Probability': [ou_proba],
+                      'Result': over_under_result}
     except:
         over_under = {'Over/Under': 'N/A',
-                      'Probability': ['N/A']}
+                      'Probability': ['N/A'],
+                      'Result': over_under_result}
     
-    # create game id to save predictions
-    game_id = str(season) + '_' + str(week) + '_' + away_abbrev + '_' + home_abbrev
+    print(moneyline)
     return game_id, moneyline, over_under
