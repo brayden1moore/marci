@@ -120,7 +120,7 @@ def predict(home,away,season,week,total):
                      'Result': moneyline_result}
 
     # over/under
-    model = 'xgboost_OU_no_odds_60.8%'
+    model = 'xgboost_OU_no_odds_58.3%'
     file_path = os.path.join(model_directory, f'{model}.json')
     xgb_ou = xgb.Booster()
     xgb_ou.load_model(file_path)
