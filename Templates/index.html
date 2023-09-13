@@ -342,121 +342,126 @@
 
 
     function submitData() {
-    const table = document.getElementById('gameTable');
-    const rows = table.querySelectorAll('tr');
-    const games = [];
+        const predictButton = document.getElementById('submitButton');
+        const table = document.getElementById('gameTable');
+        const rows = table.querySelectorAll('tr');
+        const games = [];
 
-    rows.forEach((row, index) => {
-        if (index === 0) return;
-        const cells = row.querySelectorAll('td');
-        const game = {};
+        predictButton.textContent = 'Predicting...';
 
-        game.Date = cells[0].textContent;
-        game.AwayTeam = cells[1].querySelector('img').alt;
-        game.HomeTeam = cells[2].querySelector('img').alt;
-        game.OverUnderLine = cells[3].querySelector('input').value;
-        game.rowIndex = index - 1;  
-        games.push(game);
-    });
+        rows.forEach((row, index) => {
+            if (index === 0) return;
+            const cells = row.querySelectorAll('td');
+            const game = {};
 
-    fetch('/submit_games', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(games),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.moneylines && data.over_unders) {
-            const table = document.getElementById('gameTable');
-            const rows = table.querySelectorAll('tr');
-
-            data.moneylines.forEach((moneyline, index) => {
-                const row = rows[parseInt(moneyline.rowIndex) + 1];
-                
-                const winnerCell = row.cells[row.cells.length - 2];
-                winnerCell.innerHTML = ''; 
-                
-                const wrapperDiv = document.createElement('div');
-                wrapperDiv.className = 'winner-wrapper';
-
-                const winnerImg = document.createElement('img');
-                winnerImg.src = `/Static/${moneyline.Winner}.webp`;
-                winnerImg.alt = moneyline.Winner;
-                winnerImg.width = 50;  
-                winnerImg.className = 'winner-image hidden';
-                wrapperDiv.appendChild(winnerImg);
-
-                const winnerEmojiDiv = document.createElement('div');
-                winnerEmojiDiv.className = 'emoji';
-
-                if (moneyline.Winner === moneyline.Result) {
-                    winnerEmojiDiv.textContent = '✅';
-                } else {
-                    winnerEmojiDiv.textContent = '❌';
-                }
-                if (moneyline.Result === 'N/A') {
-                    winnerEmojiDiv.textContent = `(${(moneyline.Probabilities[0] * 100).toFixed(1)}%)`;
-                }
-                wrapperDiv.appendChild(winnerEmojiDiv);
-
-                setTimeout(() => {
-                    winnerImg.classList.remove('hidden');
-                }, 10);
-
-                const winnerOverlayDiv = document.createElement('div');
-                winnerOverlayDiv.className = 'overlay';
-                winnerOverlayDiv.textContent = `${(moneyline.Probabilities[0] * 100).toFixed(2)}%`;
-                //wrapperDiv.appendChild(winnerOverlayDiv);
-                winnerCell.appendChild(wrapperDiv);
-
-                const overUnderCell = row.cells[row.cells.length - 1];
-                overUnderCell.innerHTML = ''; 
-
-                const overUnderDiv = document.createElement('div');
-                overUnderDiv.className = 'over-under-wrapper hidden';
-
-                const textDiv = document.createElement('div');
-                textDiv.className = 'over-under-text';
-                textDiv.textContent = data.over_unders[index]['Over/Under'];
-                if (textDiv.textContent === 'Over') {
-                    overUnderDiv.className += ' over';
-                } else if (textDiv.textContent === 'Under') {
-                    overUnderDiv.className += ' under';
-                } else {
-                    overUnderDiv.className += ' na';
-                }
-
-                overUnderDiv.appendChild(textDiv);
-
-                const overEmojiDiv = document.createElement('div');
-                overEmojiDiv.className = 'emoji';
-
-                if (data.over_unders[index]['Over/Under'] === data.over_unders[index]['Result']) {
-                    overEmojiDiv.textContent = '✅';
-                } else {
-                    overEmojiDiv.textContent = '❌';
-                }
-                if (data.over_unders[index]['Result'] === 'N/A') {
-                    overEmojiDiv.textContent = `(${(data.over_unders[index]['Probability'][0] * 100).toFixed(1)}%)`;
-                }
-                overUnderDiv.appendChild(overEmojiDiv);
-
-                setTimeout(() => {
-                    overUnderDiv.classList.remove('hidden');
-                }, 10);
-
-                const overUnderOverlayDiv = document.createElement('div');
-                overUnderOverlayDiv.className = 'overlay';
-                overUnderOverlayDiv.textContent = `${(data.over_unders[index]['Probability'][0] * 100).toFixed(2)}%`;
-                //overUnderDiv.appendChild(overUnderOverlayDiv);
-
-                overUnderCell.appendChild(overUnderDiv);
-            
-            });
-        }
+            game.Date = cells[0].textContent;
+            game.AwayTeam = cells[1].querySelector('img').alt;
+            game.HomeTeam = cells[2].querySelector('img').alt;
+            game.OverUnderLine = cells[3].querySelector('input').value;
+            game.rowIndex = index - 1;  
+            games.push(game);
         });
+
+        fetch('/submit_games', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(games),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.moneylines && data.over_unders) {
+                const table = document.getElementById('gameTable');
+                const rows = table.querySelectorAll('tr');
+
+                data.moneylines.forEach((moneyline, index) => {
+                    const row = rows[parseInt(moneyline.rowIndex) + 1];
+                    
+                    const winnerCell = row.cells[row.cells.length - 2];
+                    winnerCell.innerHTML = ''; 
+                    
+                    const wrapperDiv = document.createElement('div');
+                    wrapperDiv.className = 'winner-wrapper';
+
+                    const winnerImg = document.createElement('img');
+                    winnerImg.src = `/Static/${moneyline.Winner}.webp`;
+                    winnerImg.alt = moneyline.Winner;
+                    winnerImg.width = 50;  
+                    winnerImg.className = 'winner-image hidden';
+                    wrapperDiv.appendChild(winnerImg);
+
+                    const winnerEmojiDiv = document.createElement('div');
+                    winnerEmojiDiv.className = 'emoji';
+
+                    if (moneyline.Winner === moneyline.Result) {
+                        winnerEmojiDiv.textContent = '✅';
+                    } else {
+                        winnerEmojiDiv.textContent = '❌';
+                    }
+                    if (moneyline.Result === 'N/A') {
+                        winnerEmojiDiv.textContent = `(${(moneyline.Probabilities[0] * 100).toFixed(1)}%)`;
+                    }
+                    wrapperDiv.appendChild(winnerEmojiDiv);
+
+                    setTimeout(() => {
+                        winnerImg.classList.remove('hidden');
+                    }, 10);
+
+                    const winnerOverlayDiv = document.createElement('div');
+                    winnerOverlayDiv.className = 'overlay';
+                    winnerOverlayDiv.textContent = `${(moneyline.Probabilities[0] * 100).toFixed(2)}%`;
+                    //wrapperDiv.appendChild(winnerOverlayDiv);
+                    winnerCell.appendChild(wrapperDiv);
+
+                    const overUnderCell = row.cells[row.cells.length - 1];
+                    overUnderCell.innerHTML = ''; 
+
+                    const overUnderDiv = document.createElement('div');
+                    overUnderDiv.className = 'over-under-wrapper hidden';
+
+                    const textDiv = document.createElement('div');
+                    textDiv.className = 'over-under-text';
+                    textDiv.textContent = data.over_unders[index]['Over/Under'];
+                    if (textDiv.textContent === 'Over') {
+                        overUnderDiv.className += ' over';
+                    } else if (textDiv.textContent === 'Under') {
+                        overUnderDiv.className += ' under';
+                    } else {
+                        overUnderDiv.className += ' na';
+                    }
+
+                    overUnderDiv.appendChild(textDiv);
+
+                    const overEmojiDiv = document.createElement('div');
+                    overEmojiDiv.className = 'emoji';
+
+                    if (data.over_unders[index]['Over/Under'] === data.over_unders[index]['Result']) {
+                        overEmojiDiv.textContent = '✅';
+                    } else {
+                        overEmojiDiv.textContent = '❌';
+                    }
+                    if (data.over_unders[index]['Result'] === 'N/A') {
+                        overEmojiDiv.textContent = `(${(data.over_unders[index]['Probability'][0] * 100).toFixed(1)}%)`;
+                    }
+                    overUnderDiv.appendChild(overEmojiDiv);
+
+                    setTimeout(() => {
+                        overUnderDiv.classList.remove('hidden');
+                    }, 10);
+
+                    const overUnderOverlayDiv = document.createElement('div');
+                    overUnderOverlayDiv.className = 'overlay';
+                    overUnderOverlayDiv.textContent = `${(data.over_unders[index]['Probability'][0] * 100).toFixed(2)}%`;
+                    //overUnderDiv.appendChild(overUnderOverlayDiv);
+
+                    overUnderCell.appendChild(overUnderDiv);
+                
+                });
+            }
+            });
+
+            predictButton.textContent = 'Predict';
     }
 
     document.getElementById('submitButton').addEventListener('click', submitData);
