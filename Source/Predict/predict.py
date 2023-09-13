@@ -64,17 +64,19 @@ def get_games(week):
 def get_one_week(home,away,season,week):
     try:
         home_df = gbg.loc[((gbg['away_team']==home) | (gbg['home_team']==home)) & (gbg['Season']==season) & (gbg['GP']==week-1)]
-        home_df = home_df[[i for i in home_df.columns if '.Away' not in i] if home_df['home_team'].item()==home else [i for i in home_df.columns if '.Away' in i]]
+        gbg_home_team = home_df['home_team'].item()
+        home_df.drop(columns=['game_id','home_team','away_team','Season','game_date'], inplace=True)
+        home_df = home_df[[i for i in home_df.columns if '.Away' not in i] if gbg_home_team==home else [i for i in home_df.columns if '.Away' in i]]
         home_df.columns = [i.replace('.Away','') for i in home_df.columns]
 
         away_df = gbg.loc[((gbg['away_team']==away) | (gbg['home_team']==away)) & (gbg['Season']==season) & (gbg['GP']==week-1)]
-        away_df = away_df[[i for i in away_df.columns if '.Away' not in i] if away_df['home_team'].item()==away else [i for i in away_df.columns if '.Away' in i]]
+        gbg_home_team = away_df['home_team'].item()
+        away_df.drop(columns=['game_id','home_team','away_team','Season','game_date'], inplace=True)
+        away_df = away_df[[i for i in away_df.columns if '.Away' not in i] if gbg_home_team==away else [i for i in away_df.columns if '.Away' in i]]
         away_df.columns = [i.replace('.Away','') + '.Away' for i in away_df.columns]
 
-        drop_columns = ['game_id', 'Season', 'home_team', 'away_team', 'game_date']
-        print(home_df.columns)
-        print(away_df.columns)
-        df = home_df.merge(away_df.drop(columns=[i+'.Away' for i in drop_columns]), left_on='GP', right_on='GP.Away')
+        df = home_df.merge(away_df, left_on='GP', right_on='GP.Away')
+        print(df.columns)
         return df
     except ValueError:
         return pd.DataFrame()
