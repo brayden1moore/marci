@@ -31,6 +31,9 @@
         color: #f2f2f2;
         margin: 0px;
     }
+    .table-div{
+        overflow-x: scroll;
+    }
     table {
         margin-top: 20px;
         width: 100%;
@@ -187,6 +190,7 @@
         background: rgb(61, 61, 61);
         margin-top: 50px;
         margin-bottom: 50px;
+        width: 100%;
     }
 
     .label {
@@ -239,6 +243,20 @@
         font-weight: bold;
         transition: 0.3s ease;
     }
+
+
+    @media screen and (max-width: 768px) {
+    .winner-wrapper, .over-under-wrapper{
+        display: contents;
+    }
+    .winner-image {
+        margin: auto;
+    }
+    .emoji {
+        margin: 0;
+    }
+}
+
 </style>
 
 <div class="scroll-banner">
@@ -253,18 +271,19 @@
         <span class="label"><i>"Moore's Algorithm for Risky Capital Investments"</i></span><br><br>
         <span class="label">Winners:</span> 0-0<br>
         <span class="label">Over/Unders:</span> 0-0<br><br>
-
-    <table id="gameTable">
-        <tr>
-            <th>Date</th>
-            <th>Away Team</th>
-            <th>Home Team</th>
-            <th>Over/Under Line</th>
-            <th>Predicted Winner</th>
-            <th>Predicted Over/Under</th>
-        </tr>
-    </table>
-
+    </div>
+    <div class="table-div">
+        <table id="gameTable">
+            <tr>
+                <th>Date</th>
+                <th>Away Team</th>
+                <th>Home Team</th>
+                <th>Over/Under Line</th>
+                <th>Predicted Winner</th>
+                <th>Predicted Over/Under</th>
+            </tr>
+        </table>
+    </div>
     <button id="submitButton">
         Predict
     </button>
