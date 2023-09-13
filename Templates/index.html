@@ -229,6 +229,10 @@
         100% { transform: translateX(-100%); }
     }
 
+    .emoji {
+        margin-left: 5px;
+        color: rgb(114, 114, 114);
+    }
 </style>
 
 <div class="scroll-banner">
@@ -386,13 +390,14 @@
 
                 const winnerEmojiDiv = document.createElement('div');
                 winnerEmojiDiv.className = 'emoji';
+
                 if (moneyline.Winner === moneyline.Result) {
                     winnerEmojiDiv.textContent = '✅';
                 } else {
                     winnerEmojiDiv.textContent = '❌';
                 }
                 if (moneyline.Result === 'N/A') {
-                    winnerEmojiDiv.textContent = '';
+                    winnerEmojiDiv.textContent = `(${(moneyline.Probabilities[0] * 100).toFixed(1)}%)`;
                 }
                 wrapperDiv.appendChild(winnerEmojiDiv);
 
@@ -403,7 +408,7 @@
                 const winnerOverlayDiv = document.createElement('div');
                 winnerOverlayDiv.className = 'overlay';
                 winnerOverlayDiv.textContent = `${(moneyline.Probabilities[0] * 100).toFixed(2)}%`;
-                wrapperDiv.appendChild(winnerOverlayDiv);
+                //wrapperDiv.appendChild(winnerOverlayDiv);
                 winnerCell.appendChild(wrapperDiv);
 
                 const overUnderCell = row.cells[row.cells.length - 1];
@@ -427,13 +432,14 @@
 
                 const overEmojiDiv = document.createElement('div');
                 overEmojiDiv.className = 'emoji';
+
                 if (data.over_unders[index]['Over/Under'] === data.over_unders[index]['Result']) {
                     overEmojiDiv.textContent = '✅';
                 } else {
                     overEmojiDiv.textContent = '❌';
                 }
                 if (data.over_unders[index]['Result'] === 'N/A') {
-                    overEmojiDiv.textContent = '';
+                    overEmojiDiv.textContent = `(${(data.over_unders[index]['Probability'][0] * 100).toFixed(1)}%)`;
                 }
                 overUnderDiv.appendChild(overEmojiDiv);
 
@@ -444,7 +450,7 @@
                 const overUnderOverlayDiv = document.createElement('div');
                 overUnderOverlayDiv.className = 'overlay';
                 overUnderOverlayDiv.textContent = `${(data.over_unders[index]['Probability'][0] * 100).toFixed(2)}%`;
-                overUnderDiv.appendChild(overUnderOverlayDiv);
+                //overUnderDiv.appendChild(overUnderOverlayDiv);
 
                 overUnderCell.appendChild(overUnderDiv);
             
