@@ -402,7 +402,7 @@
 
                 const winnerOverlayDiv = document.createElement('div');
                 winnerOverlayDiv.className = 'overlay';
-                winnerOverlayDiv.textContent = `${Math.round(moneyline.Probabilities[0] * 100)}%`;
+                winnerOverlayDiv.textContent = `${(moneyline.Probabilities[0] * 100).toFixed(2)}%`;
                 wrapperDiv.appendChild(winnerOverlayDiv);
                 winnerCell.appendChild(wrapperDiv);
 
@@ -443,7 +443,7 @@
 
                 const overUnderOverlayDiv = document.createElement('div');
                 overUnderOverlayDiv.className = 'overlay';
-                overUnderOverlayDiv.textContent = `${Math.round(data.over_unders[index]['Probability'][0] * 100)}%`;
+                overUnderOverlayDiv.textContent = `${(data.over_unders[index]['Probability'][0] * 100).toFixed(2)}%`;
                 overUnderDiv.appendChild(overUnderOverlayDiv);
 
                 overUnderCell.appendChild(overUnderDiv);
