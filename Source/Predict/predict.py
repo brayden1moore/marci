@@ -72,7 +72,7 @@ def get_one_week(home,away,season,week):
         away_df.columns = [i.replace('.Away','') + '.Away' for i in away_df.columns]
 
         drop_columns = ['game_id', 'Season', 'home_team', 'away_team', 'game_date']
-        df = home_df.merge(away_df, left_on='GP', right_on='GP.Away').drop(columns=drop_columns)
+        df = home_df.drop(columns=drop_columns).merge(away_df.drop(columns=drop_columns), left_on='GP', right_on='GP.Away')
         return df
     except ValueError:
         return pd.DataFrame()
