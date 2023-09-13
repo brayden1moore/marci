@@ -48,10 +48,10 @@ def get_week():
     return int(week), int(year)
 
 
-def get_games():
+def get_games(week):
     # pull from NBC
     url = 'https://www.nbcsports.com/nfl/schedule'
-    df = pd.read_html(url)[0]
+    df = pd.read_html(url)[week-1]
     df['Away Team'] = [' '.join(i.split('\xa0')[1:]) for i in df['Away TeamAway Team']]
     df['Home Team'] = [' '.join(i.split('\xa0')[1:]) for i in df['Home TeamHome Team']]
     df['Date'] = pd.to_datetime(df['Game TimeGame Time'])
@@ -120,7 +120,7 @@ def predict(home,away,season,week,total):
                      'Result': moneyline_result}
 
     # over/under
-    model = 'xgboost_OU_no_odds_58.3%'
+    model = 'xgboost_OU_no_odds_59.8%'
     file_path = os.path.join(model_directory, f'{model}.json')
     xgb_ou = xgb.Booster()
     xgb_ou.load_model(file_path)
