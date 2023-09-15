@@ -243,6 +243,25 @@
         transition: 0.3s ease;
     }
 
+    .spinner {
+        margin: auto;
+        display: block;
+        border: 2px solid transparent;
+        border-radius: 50%;
+        border-top: 2px solid #6a6a6a;
+        width: 16px;
+        height: 16px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 
     @media screen and (max-width: 768px) {
     .winner-wrapper, .over-under-wrapper{
@@ -337,8 +356,10 @@
         const pulled_games = await response.json();
         const table = document.getElementById('gameTable');
         const columns = ['Date','Away Team', 'Home Team']; 
+        const lines_response = await fetch('/get_lines');
+        const lines = await lines_response.json()
 
-        pulled_games.forEach((game) => {
+        pulled_games.forEach((game, index) => {
             const row = table.insertRow(-1);
             
             columns.forEach((column) => {
@@ -353,12 +374,13 @@
                     cell.textContent = game[column];
                 }
             });
-
+            
             for (let i = 0; i < 3; i++) {
                 const cell = row.insertCell(-1);
                 if (i<1) {
                     const input = document.createElement('input');
                     input.type = 'text';
+                    input.value = lines[index];
                     cell.appendChild(input);
                 }
             }
@@ -370,14 +392,23 @@
 
     function submitData() {
         const predictButton = document.getElementById('submitButton');
+
         const table = document.getElementById('gameTable');
         const rows = table.querySelectorAll('tr');
         const games = [];
 
-        predictButton.textContent = 'Predicting...';
-
         rows.forEach((row, index) => {
             if (index === 0) return;
+            
+            const winnerCell = row.cells[row.cells.length - 2];
+            const overUnderCell = row.cells[row.cells.length - 1];
+            const spinnerDiv = document.createElement('div');
+            spinnerDiv.className = 'spinner';
+            winnerCell.innerHTML = ''; 
+            overUnderCell.innerHTML = ''; 
+            winnerCell.appendChild(spinnerDiv);
+            overUnderCell.appendChild(spinnerDiv.cloneNode(true));
+
             const cells = row.querySelectorAll('td');
             const game = {};
 
@@ -388,6 +419,7 @@
             game.rowIndex = index - 1;  
             games.push(game);
         });
+
 
         fetch('/submit_games', {
             method: 'POST',
@@ -404,10 +436,11 @@
 
                 data.moneylines.forEach((moneyline, index) => {
                     const row = rows[parseInt(moneyline.rowIndex) + 1];
-                    
+
                     const winnerCell = row.cells[row.cells.length - 2];
+                    winnerCell.removeChild(winnerCell.querySelector('.spinner'));
                     winnerCell.innerHTML = ''; 
-                    
+
                     const wrapperDiv = document.createElement('div');
                     wrapperDiv.className = 'winner-wrapper';
 
@@ -435,13 +468,10 @@
                         winnerImg.classList.remove('hidden');
                     }, 10);
 
-                    const winnerOverlayDiv = document.createElement('div');
-                    winnerOverlayDiv.className = 'overlay';
-                    winnerOverlayDiv.textContent = `${(moneyline.Probabilities[0] * 100).toFixed(2)}%`;
-                    //wrapperDiv.appendChild(winnerOverlayDiv);
                     winnerCell.appendChild(wrapperDiv);
 
                     const overUnderCell = row.cells[row.cells.length - 1];
+                    overUnderCell.removeChild(overUnderCell.querySelector('.spinner'));
                     overUnderCell.innerHTML = ''; 
 
                     const overUnderDiv = document.createElement('div');
@@ -480,15 +510,12 @@
                     const overUnderOverlayDiv = document.createElement('div');
                     overUnderOverlayDiv.className = 'overlay';
                     overUnderOverlayDiv.textContent = `${(data.over_unders[index]['Probability'][0] * 100).toFixed(2)}%`;
-                    //overUnderDiv.appendChild(overUnderOverlayDiv);
-
                     overUnderCell.appendChild(overUnderDiv);
                 
                 });
             }
             });
 
-            predictButton.textContent = 'Predict';
     }
 
     document.getElementById('submitButton').addEventListener('click', submitData);

@@ -10,6 +10,24 @@ pd.set_option('display.expand_frame_repr', False)
 import os
 import json
 
+# input the over/under lines here for quicker predictions!
+lines = [49,
+         40.5,
+         47,
+         46,
+         47,
+         39.5,
+         51.5,
+         41,
+         45.5,
+         40,
+         44.5,
+         38,
+         39,
+         46,
+         39.5,
+         38]
+
 # get week, season
 week, season = predict.get_week()
 
@@ -21,6 +39,10 @@ games = predict.get_games(week)[['Date','Away Team','Home Team']]
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/get_lines')
+def get_lines():
+    return jsonify(lines)
 
 @app.route('/get_games')
 def get_games():
