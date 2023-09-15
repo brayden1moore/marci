@@ -454,10 +454,7 @@
                     const winnerEmojiDiv = document.createElement('div');
                     winnerEmojiDiv.className = 'emoji';
 
-                    console.log(moneyline.Winner)
-                    console.log(moneyline.Result)
-                    
-                    if (moneyline.Winner === moneyline.Result) {
+                    if (moneyline.Winner[0] === moneyline.Result) {
                         winnerEmojiDiv.textContent = '✅';
                     } else {
                         winnerEmojiDiv.textContent = '❌';
@@ -496,7 +493,7 @@
                     const overEmojiDiv = document.createElement('div');
                     overEmojiDiv.className = 'emoji';
 
-                    if (data.over_unders[index]['Over/Under'] === data.over_unders[index]['Result']) {
+                    if (data.over_unders[index]['Over/Under'][0] === data.over_unders[index]['Result']) {
                         overEmojiDiv.textContent = '✅';
                     } else {
                         overEmojiDiv.textContent = '❌';
