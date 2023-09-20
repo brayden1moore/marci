@@ -30,7 +30,6 @@ lines = [49,
 
 # get week, season
 week, season = predict.get_week()
-week = 2
 
 app = Flask(__name__, template_folder="Templates", static_folder="Static", static_url_path="/Static")
 app.secret_key = 'green-flounder'
