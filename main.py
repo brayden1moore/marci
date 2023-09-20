@@ -11,22 +11,22 @@ import os
 import json
 
 # input the over/under lines here for quicker predictions!
-lines = [49,
-         40.5,
-         47,
-         46,
-         47,
-         39.5,
-         51.5,
-         41,
+lines = [44.5,
          45.5,
-         40,
-         44.5,
-         38,
-         39,
-         46,
-         39.5,
-         38]
+         38.5,
+         46.5,
+         42,
+         44,
+         48,
+         54,
+         37,
+         44,
+         41.5,
+         42.5,
+         48,
+         43.5,
+         45.5,
+         44]
 
 # get week, season
 week, season = predict.get_week()
