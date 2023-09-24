@@ -444,6 +444,10 @@
 
                     const wrapperDiv = document.createElement('div');
                     wrapperDiv.className = 'winner-wrapper';
+                    if (moneyline.Probabilities[0] > 0.6){
+                        wrapperDiv.style.border = "2px solid lightgrey";
+                        wrapperDiv.style.borderRadius = "10px";
+                    }
 
                     const winnerImg = document.createElement('img');
                     winnerImg.src = `/Static/${moneyline.Winner}.webp`;
@@ -477,6 +481,10 @@
 
                     const overUnderDiv = document.createElement('div');
                     overUnderDiv.className = 'over-under-wrapper hidden';
+                    if (data.over_unders[index]['Probability'][0] > 0.6){
+                        overUnderDiv.style.border = "2px solid lightgrey";
+                        overUnderDiv.style.borderRadius = "10px";
+                    }
 
                     const textDiv = document.createElement('div');
                     textDiv.className = 'over-under-text';
