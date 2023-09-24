@@ -388,8 +388,6 @@
             });
     }
 
-    fetchGames();
-
 
     function submitData() {
         const predictButton = document.getElementById('submitButton');
@@ -529,9 +527,9 @@
 
     document.getElementById('submitButton').addEventListener('click', submitData);
 
-    document.addEventListener('DOMContentLoaded', function() {
+    fetchGames().then(() => {
         submitData();
-    }, false);
+    });
 
     document.addEventListener('keydown', function(event) {
     if (event.keyCode === 13) {  
