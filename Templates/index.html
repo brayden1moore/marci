@@ -258,7 +258,7 @@
 
     @media screen and (max-width: 768px) {
         .winner-image {
-            margin: auto;
+            margin: 0;
         }
         .emoji {
             margin: 0;
@@ -452,7 +452,7 @@
                         winnerEmojiDiv.textContent = '❌';
                     }
                     if (moneyline.Result === 'N/A') {
-                        winnerEmojiDiv.textContent = `(${(moneyline.Probabilities[0] * 100).toFixed(1)}%)`;
+                        winnerEmojiDiv.textContent = `(${(moneyline.Probabilities[0] * 100).toFixed(0)}%)`;
                     }
                     wrapperDiv.appendChild(winnerEmojiDiv);
 
@@ -494,18 +494,13 @@
                         overEmojiDiv.textContent = '❌';
                     }
                     if (data.over_unders[index]['Result'] === 'N/A') {
-                        overEmojiDiv.textContent = `(${(data.over_unders[index]['Probability'][0] * 100).toFixed(1)}%)`;
+                        overEmojiDiv.textContent = `(${(data.over_unders[index]['Probability'][0] * 100).toFixed(0)}%)`;
                     }
                     overUnderDiv.appendChild(overEmojiDiv);
 
                     setTimeout(() => {
                         overUnderDiv.classList.remove('hidden');
                     }, 10);
-
-                    const overUnderOverlayDiv = document.createElement('div');
-                    overUnderOverlayDiv.className = 'overlay';
-                    overUnderOverlayDiv.textContent = `${(data.over_unders[index]['Probability'][0] * 100).toFixed(2)}%`;
-                    overUnderCell.appendChild(overUnderDiv);
                 
                 });
             }
