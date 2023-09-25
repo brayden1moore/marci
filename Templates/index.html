@@ -433,7 +433,6 @@
                     const wrapperDiv = document.createElement('div');
                     wrapperDiv.className = 'winner-wrapper';
                     if (moneyline.Probabilities[0] > 0.6){
-                        winnerCell.classList.add("cell-highlight");
                         wrapperDiv.classList.add("highlight");
                     }
 
@@ -470,7 +469,6 @@
                     const overUnderDiv = document.createElement('div');
                     overUnderDiv.className = 'over-under-wrapper hidden';
                     if (data.over_unders[index]['Probability'][0] > 0.6){
-                        overUnderCell.classList.add("cell-highlight");
                         overUnderDiv.classList.add("highlight");
                     }
 
