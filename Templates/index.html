@@ -461,7 +461,7 @@
                         winnerEmojiDiv.textContent = '❌';
                     }
                     if (moneyline.Result === 'N/A') {
-                        winnerEmojiDiv.textContent = `(${(moneyline.Probabilities[0] * 100).toFixed(1)}%)`;
+                        winnerEmojiDiv.textContent = `(${(moneyline.Probabilities[0] * 100).toFixed(0)}%)`;
                     }
                     wrapperDiv.appendChild(winnerEmojiDiv);
 
@@ -503,7 +503,7 @@
                         overEmojiDiv.textContent = '❌';
                     }
                     if (data.over_unders[index]['Result'] === 'N/A') {
-                        overEmojiDiv.textContent = `(${(data.over_unders[index]['Probability'][0] * 100).toFixed(1)}%)`;
+                        overEmojiDiv.textContent = `(${(data.over_unders[index]['Probability'][0] * 100).toFixed(0)}%)`;
                     }
                     overUnderDiv.appendChild(overEmojiDiv);
 
