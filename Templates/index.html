@@ -144,6 +144,9 @@
         border: 2px solid rgb(50, 50, 50)  !important;
         border-radius: 10px  !important;
     }
+    .cell-highlight {
+        border: 2px solid rgb(0, 0, 0)  !important;
+    }
     .force-repaint { transform: translateZ(0); }
 
     .hidden {
@@ -256,18 +259,21 @@
     }
 
     @media screen and (max-width: 768px) {
-    .winner-wrapper, .over-under-wrapper{
-        display: contents;
-    }
-    .winner-image {
-        margin: auto;
-    }
-    .emoji {
-        margin: 0;
-    }
-    .table-div{
-        overflow-x: scroll;
-    }
+        .winner-wrapper, .over-under-wrapper{
+            display: contents;
+        }
+        .winner-image {
+            margin: auto;
+        }
+        .emoji {
+            margin: 0;
+        }
+        .table-div{
+            overflow-x: scroll;
+        }
+        .cell-highlight {
+            border: 2px solid rgb(50, 50, 50)  !important;
+        }
     }
 
 </style>
@@ -435,8 +441,8 @@
                     const wrapperDiv = document.createElement('div');
                     wrapperDiv.className = 'winner-wrapper';
                     if (moneyline.Probabilities[0] > 0.6){
-                        winnerCell.classList.add("highlight");
-                        winnerCell.classList.toggle("force-repaint");
+                        winnerCell.classList.add("cell-highlight");
+                        wrapperDiv.classList.add("highlight");
                     }
 
                     const winnerImg = document.createElement('img');
@@ -472,8 +478,8 @@
                     const overUnderDiv = document.createElement('div');
                     overUnderDiv.className = 'over-under-wrapper hidden';
                     if (data.over_unders[index]['Probability'][0] > 0.6){
-                        overUnderCell.classList.add("highlight");
-                        overUnderCell.classList.toggle("force-repaint");
+                        overUnderCell.classList.add("cell-highlight");
+                        overUnderDiv.classList.add("highlight");
                     }
 
                     const textDiv = document.createElement('div');
