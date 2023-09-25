@@ -318,11 +318,11 @@
         <table id="gameTable">
             <tr>
                 <th>Date</th>
-                <th>Away Team</th>
-                <th>Home Team</th>
-                <th>Over/Under Line</th>
-                <th>Predicted Winner</th>
-                <th>Predicted Over/Under</th>
+                <th>Away</th>
+                <th>Home</th>
+                <th>O/U Line</th>
+                <th>Winner</th>
+                <th>Predicted O/U</th>
             </tr>
         </table>
     </div>
@@ -376,7 +376,7 @@
         const response = await fetch('/get_games');
         const pulled_games = await response.json();
         const table = document.getElementById('gameTable');
-        const columns = ['Date','Away Team', 'Home Team']; 
+        const columns = ['Date','Away', 'Home']; 
         const lines_response = await fetch('/get_lines');
         const lines = await lines_response.json()
 
@@ -385,7 +385,7 @@
             
             columns.forEach((column) => {
                 const cell = row.insertCell(-1);
-                if (column === 'Away Team' || column === 'Home Team') {
+                if (column === 'Away' || column === 'Home') {
                     const img = document.createElement('img');
                     img.src = `/Static/${game[column]}.webp`;
                     img.alt = game[column];
