@@ -5,6 +5,8 @@ import pickle as pkl
 import os
 import requests
 from bs4 import BeautifulSoup
+import warnings
+warnings.filterwarnings("ignore")
 
 # set dirs for other files
 current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -64,27 +66,26 @@ def get_games(week):
 def get_one_week(home,away,season,week):
     try:
         home_df = gbg.loc[((gbg['away_team']==home) | (gbg['home_team']==home)) & (gbg['Season']==season) & (gbg['GP']==week-1)]
-        print(home_df)
         gbg_home_team = home_df['home_team'].item()
         home_df.drop(columns=['game_id','home_team','away_team','Season','game_date'], inplace=True)
         home_df = home_df[[i for i in home_df.columns if '.Away' not in i] if gbg_home_team==home else [i for i in home_df.columns if '.Away' in i]]
         home_df.columns = [i.replace('.Away','') for i in home_df.columns]
 
         away_df = gbg.loc[((gbg['away_team']==away) | (gbg['home_team']==away)) & (gbg['Season']==season) & (gbg['GP']==week-1)]
-        print(away_df)
         gbg_home_team = away_df['home_team'].item()
         away_df.drop(columns=['game_id','home_team','away_team','Season','game_date'], inplace=True)
         away_df = away_df[[i for i in away_df.columns if '.Away' not in i] if gbg_home_team==away else [i for i in away_df.columns if '.Away' in i]]
         away_df.columns = [i.replace('.Away','') + '.Away' for i in away_df.columns]
 
         df = home_df.merge(away_df, left_on='GP', right_on='GP.Away')
-        print(df.columns)
         return df
     except ValueError:
         return pd.DataFrame()
 
 
 def predict(home,away,season,week,total):
+    global results
+
     # finish preparing data
     if len(home)>4:
         home_abbrev = team_name_to_abbreviation[home]
@@ -149,5 +150,4 @@ def predict(home,away,season,week,total):
                       'Probability': ['N/A'],
                       'Result': over_under_result}
     
-    print(moneyline)
     return game_id, moneyline, over_under

@@ -1,4 +1,3 @@
-from operator import index
 import nfl_data_py.nfl_data_py as nfl
 import build
 import datetime as dt
@@ -29,10 +28,12 @@ current_season = year if month in [8,9,10,11,12] else year-1
 
 # update current season
 build.build_gbg_data(get_seasons=[current_season])
+#build.build_gbg_data(get_seasons=range(2014,2024))
 build.add_odds_data()
 
 # get winners
-pbp = build.get_pbp_data([2023])
+pbp = build.get_pbp_data([current_season])
+
 pbp = pbp.drop_duplicates(subset='game_id')
 pbp[['season','week','away','home']] = pbp['game_id'].str.split('_', expand=True)
 games = pbp[['game_id','away_score','home_score','season','week','away','home']]
@@ -46,5 +47,6 @@ games['winner'] = [a if a_s>h_s else h if h_s>a_s else 'Tie' for a,h,a_s,h_s in 
 
 file_path = os.path.join(data_directory, 'results.csv')
 games[['game_id','total','winner']].to_csv(file_path, index=False)
+
 
 

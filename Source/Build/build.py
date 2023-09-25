@@ -18,10 +18,10 @@ current_season = year if month in [8,9,10,11,12] else year-1
 def get_pbp_data(get_seasons=[]):
     """
     Pull data from nflFastR's Github repo. 
-    If you choose to overwrite, it will replace the existing pbp data with the data you pull.
 
     """
     pbp = nfl.import_pbp_data(get_seasons)
+    #pbp = pd.read_csv(r"C:\Users\brayd\Downloads\play_by_play_2023.csv")
     pbp['TOP_seconds'] = pbp['drive_time_of_possession'].apply(lambda x: int(x.split(':')[0]) * 60 + int(x.split(':')[1]) if pd.notnull(x) else 0)
 
     return pbp
@@ -110,10 +110,9 @@ def build_gbg_data(get_seasons=[]):
                 'PointDiff':'mean'
             }
 
-            game = team.groupby('game_id').agg(features).reset_index()
+            game = team.groupby('game_id').agg(features).reset_index().sort_values('GP')
             game[['W','L']] = game[['W','L']].expanding().sum()
             game[game.columns[4:]] = game[game.columns[4:]].expanding().mean()
-            
             if season != current_season:
                 game[game.columns[1:]] = game[game.columns[1:]].shift()
                 game['TEAM'] = team_name
@@ -161,9 +160,9 @@ def add_odds_data():
     odds['Home Team'] = odds['Home Team'].str.replace('Washington Redskins','Washington Commanders').str.replace('Washington Football Team','Washington Commanders')
     odds['Away Team'] = odds['Away Team'].str.replace('Washington Redskins','Washington Commanders').str.replace('Washington Football Team','Washington Commanders')
     odds['Season'] = [i.year if i.month in [8,9,10,11,12] else i.year-1 for i in odds['Date']]
-    odds['Home Team Abbrev'] = odds['Home Team'].map(team_abbreviation_dict)
-    odds['Away Team Abbrev'] = odds['Away Team'].map(team_abbreviation_dict)
-    odds = odds[['Date','Home Score','Away Score','Home Team Abbrev','Away Team Abbrev','Home Odds Close','Away Odds Close','Total Score Close']]
+    odds['Home Team Abbrev'] = odds['Home Team'].map(team_abbreviation_dict).str.replace('LAR','LA')
+    odds['Away Team Abbrev'] = odds['Away Team'].map(team_abbreviation_dict).str.replace('LAR','LA')
+    odds = odds[['Date','Home Score','Away Score','Home Team Abbrev','Away Team Abbrev','Home Odds Close','Away Odds Close','Total Score Close','Home Line Close']]
     odds['Key'] = odds['Date'].astype(str) + odds['Home Team Abbrev'] + odds['Away Team Abbrev']
     odds = odds.drop(columns=['Date','Home Team Abbrev','Away Team Abbrev']).dropna()
     odds['Home Odds'] = [round((i-1)*100) if i>= 2 else round(-100/(i-1)) for i in odds['Home Odds Close']]
@@ -183,6 +182,7 @@ def add_odds_data():
         i = dataframes[idx]
         i['Key'] = i['game_date'].astype(str) + i['home_team'] + i['away_team']
         gbg_and_odds = i.merge(odds, left_on='Key', right_on='Key')
+        gbg_and_odds['Home-Team-Cover'] = [1 if (h-a)>-l else 0 if (h-a)<-l else 2 for h,a,l in gbg_and_odds[['Home Score','Away Score','Home Line Close']].values] 
         gbg_and_odds['Home-Team-Win'] = (gbg_and_odds['Home Score']>gbg_and_odds['Away Score']).astype(int)
         gbg_and_odds['Over'] = ((gbg_and_odds['Home Score'] + gbg_and_odds['Away Score'])>gbg_and_odds['Total Score Close']).astype(int)
         
@@ -191,7 +191,7 @@ def add_odds_data():
         else:
             file_path = os.path.join(data_directory, 'gbg_and_odds_this_year.csv')           
         
-        gbg_and_odds.to_csv(file_path, index=False)
+        gbg_and_odds.drop_duplicates(subset='game_id').to_csv(file_path, index=False)
     
 
 
