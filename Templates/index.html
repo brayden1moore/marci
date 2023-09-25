@@ -140,8 +140,8 @@
     }
 
     .highlight {
-        background: rgb(100, 100, 100) !important;
-        border: 2px solid rgb(100, 100, 100)  !important;
+        background: rgb(50, 50, 50) !important;
+        border: 2px solid rgb(50, 50, 50)  !important;
         border-radius: 10px  !important;
     }
     .force-repaint { transform: translateZ(0); }
@@ -435,8 +435,8 @@
                     const wrapperDiv = document.createElement('div');
                     wrapperDiv.className = 'winner-wrapper';
                     if (moneyline.Probabilities[0] > 0.6){
-                        wrapperDiv.classList.add("highlight");
-                        wrapperDiv.classList.toggle("force-repaint");
+                        winnerCell.classList.add("highlight");
+                        winnerCell.classList.toggle("force-repaint");
                     }
 
                     const winnerImg = document.createElement('img');
@@ -472,8 +472,8 @@
                     const overUnderDiv = document.createElement('div');
                     overUnderDiv.className = 'over-under-wrapper hidden';
                     if (data.over_unders[index]['Probability'][0] > 0.6){
-                        overUnderDiv.classList.add("highlight");
-                        overUnderDiv.classList.toggle("force-repaint");
+                        overUnderCell.classList.add("highlight");
+                        overUnderCell.classList.toggle("force-repaint");
                     }
 
                     const textDiv = document.createElement('div');
