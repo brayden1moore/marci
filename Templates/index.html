@@ -257,6 +257,18 @@
         height: 16px;
         animation: spin 1s linear infinite;
     }
+    
+    #gradient {
+        background: red;
+        background: -webkit-linear-gradient(left, orange , yellow, green, cyan, blue, violet);
+        background: -o-linear-gradient(right, orange, yellow, green, cyan, blue, violet);
+        background: -moz-linear-gradient(right, orange, yellow, green, cyan, blue, violet);
+        background: linear-gradient(to right, orange , yellow, green, cyan, blue, violet);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 20vw;
+    }
 
     @keyframes spin {
         0% {
@@ -295,6 +307,9 @@
     <h1>M A R C I</h1>
     <div class="info">
         <span class="label"><i>"Moore's Algorithm for Risky Capital Investments"</i></span><br><br>
+
+        <span id="gradient">Remember to have fun!</span><br><br>
+
         <span class="label"><b>Record through {{ latest_game }}</b></span><br>
         <span class="label">Winners:</span> {{ winners_correct }}-{{winners_incorrect}}<span class="label"> ({{ winners_return }})</span><br>
         <span class="label">Over/Unders:</span> {{over_unders_correct}}-{{over_unders_incorrect}}<span class="label"> ({{over_unders_return}})</span><br><br>
