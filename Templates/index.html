@@ -155,6 +155,11 @@
         opacity: 1;
     }
 
+    .highlight {
+        border: 2px solid grey;
+        border-radius: 10px;
+    }
+
     .hidden {
         opacity: 0;
     }
@@ -444,8 +449,7 @@
                     const wrapperDiv = document.createElement('div');
                     wrapperDiv.className = 'winner-wrapper';
                     if (moneyline.Probabilities[0] > 0.6){
-                        wrapperDiv.style.border = "2px solid grey";
-                        wrapperDiv.style.borderRadius = "10px";
+                        wrapperDiv.classList.add("highlight");
                     }
 
                     const winnerImg = document.createElement('img');
@@ -481,8 +485,7 @@
                     const overUnderDiv = document.createElement('div');
                     overUnderDiv.className = 'over-under-wrapper hidden';
                     if (data.over_unders[index]['Probability'][0] > 0.6){
-                        overUnderDiv.style.border = "2px solid grey";
-                        overUnderDiv.style.borderRadius = "10px";
+                        overUnderDiv.classList.add("highlight");
                     }
 
                     const textDiv = document.createElement('div');
