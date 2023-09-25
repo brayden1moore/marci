@@ -160,6 +160,7 @@
         border: 2px solid rgb(100, 100, 100)  !important;
         border-radius: 10px  !important;
     }
+    .force-repaint { transform: translateZ(0); }
 
     .hidden {
         opacity: 0;
@@ -283,7 +284,7 @@
     .table-div{
         overflow-x: scroll;
     }
-}
+    }
 
 </style>
 
@@ -451,6 +452,7 @@
                     wrapperDiv.className = 'winner-wrapper';
                     if (moneyline.Probabilities[0] > 0.6){
                         wrapperDiv.classList.add("highlight");
+                        wrapperDiv.classList.toggle("force-repaint");
                     }
 
                     const winnerImg = document.createElement('img');
@@ -487,6 +489,7 @@
                     overUnderDiv.className = 'over-under-wrapper hidden';
                     if (data.over_unders[index]['Probability'][0] > 0.6){
                         overUnderDiv.classList.add("highlight");
+                        overUnderDiv.classList.toggle("force-repaint");
                     }
 
                     const textDiv = document.createElement('div');
