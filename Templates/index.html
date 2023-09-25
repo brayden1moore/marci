@@ -130,10 +130,10 @@
         font-weight: bold;
     }
     .over {
-        color: green;
+        color: rgb(255, 255, 255);
     }
     .under {
-        color: red;
+        color: rgb(255, 255, 255);
     }
     .na {
         color: white;
@@ -291,8 +291,9 @@
     <h1>M A R C I</h1>
     <div class="info">
         <span class="label"><i>"Moore's Algorithm for Risky Capital Investments"</i></span><br><br>
-        <span class="label">Winners:</span> 6-11<br>
-        <span class="label">Over/Unders:</span> 7-10<br><br>
+        <span class="label"><b>Through Week 2</b></span><br>
+        <span class="label">Winners:</span> {{ winners_correct }}-{{winners_incorrect}} <br>
+        <span class="label">Over/Unders:</span> {{over_unders_correct}}-{{over_unders_incorrect}}<br><br>
     </div>
     <div class="table-div">
         <table id="gameTable">
