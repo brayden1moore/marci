@@ -311,8 +311,8 @@
         <span id="gradient">Remember to have fun!</span><br><br>
 
         <span class="label"><b>Record through {{ latest_game }}</b></span><br>
-        <span class="label">Winners:</span> {{ winners_correct }}-{{winners_incorrect}}<span class="label"> ({{ winners_return }})</span><br>
-        <span class="label">Over/Unders:</span> {{over_unders_correct}}-{{over_unders_incorrect}}<span class="label"> ({{over_unders_return}})</span><br><br>
+        <span class="label">Winners:</span> {{ winners_correct }}-{{winners_incorrect}}{{winners_tie}}<span class="label"> ({{ winners_return }})</span><br>
+        <span class="label">Over/Unders:</span> {{over_unders_correct}}-{{over_unders_incorrect}}{{over_unders_push}}<span class="label"> ({{over_unders_return}})</span><br><br>
     </div>
     <div class="table-div">
         <table id="gameTable">
