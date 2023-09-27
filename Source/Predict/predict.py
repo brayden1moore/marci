@@ -47,6 +47,7 @@ def get_week():
     h2_tags = soup.find_all('h2')
     year = h2_tags[0].getText().split(' ')[0]
     week = h2_tags[0].getText().split(' ')[-1]
+    print(week)
     return int(week), int(year)
 
 
