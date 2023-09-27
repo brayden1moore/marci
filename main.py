@@ -13,22 +13,22 @@ with open('Source/Data/record.json','r') as f:
     record = json.load(f)
 
 # input the over/under lines here for quicker predictions!
-lines = [44.5,
+lines = [45.5,
          43,
-         38,
-         47,
-         41.5,
-         43.5,
-         47.5,
-         54.5,
-         35,
-         43,
+         53.5,
+         45.5,
+         46,
+         41,
          42.5,
-         44,
-         48.5,
+         46.5,
+         40.5,
          43.5,
-         45,
-         43.5]
+         41,
+         48,
+         43,
+         44.5,
+         41.5,
+         47]
 
 # get week, season
 week, season = predict.get_week()
