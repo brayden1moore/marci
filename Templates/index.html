@@ -480,6 +480,9 @@
                     if (moneyline.Probabilities[0] > 0.6){
                         wrapperDiv.classList.add("highlight");
                     }
+                    else {
+                        wrapperDiv.style.opacity = "0.5";
+                    }
 
                     const winnerImg = document.createElement('img');
                     winnerImg.src = `/Static/${moneyline.Winner}.webp`;
@@ -491,12 +494,12 @@
                     const winnerEmojiDiv = document.createElement('div');
                     winnerEmojiDiv.className = 'emoji';
 
-                    if (moneyline.Winner[0] === moneyline.Result && moneyline.Probabilities[0] > 0.6) {
+                    if (moneyline.Winner[0] === moneyline.Result) {
                         winnerEmojiDiv.textContent = '✅';
-                    } else if (moneyline.Winner[0] !== moneyline.Result && moneyline.Probabilities[0] > 0.6){
+                    } else {
                         winnerEmojiDiv.textContent = '❌';
                     }
-                    else {
+                    if (moneyline.Result === 'N/A') {
                         winnerEmojiDiv.textContent = `(${(moneyline.Probabilities[0] * 100).toFixed(0)}%)`;
                     }
                     wrapperDiv.appendChild(winnerEmojiDiv);
@@ -516,6 +519,9 @@
                     if (data.over_unders[index]['Probability'][0] > 0.6){
                         overUnderDiv.classList.add("highlight");
                     }
+                    else {
+                        overUnderDiv.style.opacity = "0.5";
+                    }
 
                     const textDiv = document.createElement('div');
                     textDiv.className = 'over-under-text';
@@ -533,12 +539,12 @@
                     const overEmojiDiv = document.createElement('div');
                     overEmojiDiv.className = 'emoji';
 
-                    if (data.over_unders[index]['Over/Under'][0] === data.over_unders[index]['Result'] && data.over_unders[index]['Probability'][0] > 0.6) {
+                    if (data.over_unders[index]['Over/Under'][0] === data.over_unders[index]['Result']) {
                         overEmojiDiv.textContent = '✅';
-                    } else if (data.over_unders[index]['Over/Under'][0] !== data.over_unders[index]['Result'] && data.over_unders[index]['Probability'][0] > 0.6) {
+                    } else {
                         overEmojiDiv.textContent = '❌';
                     }
-                    else {
+                    if (data.over_unders[index]['Result'] === 'N/A') {
                         overEmojiDiv.textContent = `(${(data.over_unders[index]['Probability'][0] * 100).toFixed(0)}%)`;
                     }
                     overUnderDiv.appendChild(overEmojiDiv);
