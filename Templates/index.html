@@ -491,7 +491,7 @@
                     const winnerEmojiDiv = document.createElement('div');
                     winnerEmojiDiv.className = 'emoji';
 
-                    if (moneyline.Winner[0] === moneyline.Result) {
+                    if (moneyline.Winner[0] === moneyline.Result && moneyline.Probabilities[0] > 0.6) {
                         winnerEmojiDiv.textContent = '✅';
                     } else {
                         winnerEmojiDiv.textContent = '❌';
@@ -533,7 +533,7 @@
                     const overEmojiDiv = document.createElement('div');
                     overEmojiDiv.className = 'emoji';
 
-                    if (data.over_unders[index]['Over/Under'][0] === data.over_unders[index]['Result']) {
+                    if (data.over_unders[index]['Over/Under'][0] === data.over_unders[index]['Result'] && data.over_unders[index]['Probability'][0] > 0.6) {
                         overEmojiDiv.textContent = '✅';
                     } else {
                         overEmojiDiv.textContent = '❌';
