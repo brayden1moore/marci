@@ -7,6 +7,7 @@ import requests
 from bs4 import BeautifulSoup
 import warnings
 warnings.filterwarnings("ignore")
+from datetime import datetime
 
 # set dirs for other files
 current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -30,6 +31,20 @@ file_path = os.path.join(pickle_directory, 'team_abbreviation_to_name.pkl')
 with open(file_path, 'rb') as f:
     team_abbreviation_to_name = pkl.load(f)
 
+# load models
+# moneyline
+model = 'xgboost_ML_no_odds_71.4%'
+file_path = os.path.join(model_directory, f'{model}.json')
+xgb_ml = xgb.Booster()
+xgb_ml.load_model(file_path)
+
+# over/under
+model = 'xgboost_OU_no_odds_59.8%'
+file_path = os.path.join(model_directory, f'{model}.json')
+xgb_ou = xgb.Booster()
+xgb_ou.load_model(file_path)
+
+
 def get_week():
     headers = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
@@ -47,7 +62,6 @@ def get_week():
     h2_tags = soup.find_all('h2')
     year = h2_tags[0].getText().split(' ')[0]
     week = h2_tags[0].getText().split(' ')[-1]
-    print(week)
     return int(week), int(year)
 
 
@@ -104,12 +118,7 @@ def predict(home,away,season,week,total):
 
     # create game id 
     game_id = str(season) + '_0' + str(week) + '_' + away_abbrev + '_' + home_abbrev
-
-    # moneyline
-    model = 'xgboost_ML_no_odds_71.4%'
-    file_path = os.path.join(model_directory, f'{model}.json')
-    xgb_ml = xgb.Booster()
-    xgb_ml.load_model(file_path)
+    print(game_id)
 
     try:
         moneyline_result = results.loc[results['game_id']==game_id, 'winner'].item()
@@ -126,12 +135,6 @@ def predict(home,away,season,week,total):
         moneyline = {'Winner': 'NA',
                      'Probabilities':['N/A'],
                      'Result': moneyline_result}
-
-    # over/under
-    model = 'xgboost_OU_no_odds_59.8%'
-    file_path = os.path.join(model_directory, f'{model}.json')
-    xgb_ou = xgb.Booster()
-    xgb_ou.load_model(file_path)
     
     try:
         result = results.loc[results['game_id']==game_id, 'total'].item()
