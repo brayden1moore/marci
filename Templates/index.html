@@ -35,6 +35,7 @@
     }
 
     table {
+        transition: 0.3s ease;
         margin-top: 20px;
         width: 80%;
         border-collapse: collapse;
@@ -275,6 +276,15 @@
         display: inline-block;
     }
 
+    #weekSelector {
+        transition: 0.3s ease;
+        border-radius: 10px;
+        padding: 5px;
+        color: white;
+        background: rgb(30, 30, 30) !important;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
     @keyframes spin {
         0% {
             transform: rotate(0deg);
@@ -328,6 +338,10 @@
         <span class="label">Winners:</span> {{ winners_correct }}-{{winners_incorrect}}{{winners_tie}}<span class="label"> ({{ winners_return }})</span><br>
         <span class="label">Over/Unders:</span> {{over_unders_correct}}-{{over_unders_incorrect}}{{over_unders_push}}<span class="label"> ({{over_unders_return}})</span><br><br>
     </div>
+
+    <select id="weekSelector">
+    </select>
+
     <div class="table-div">
         <table id="gameTable">
             <tr>
@@ -386,10 +400,15 @@
     
 
     <script>
-    async function fetchGames() {
-        const response = await fetch('/get_games');
+    async function fetchGames(selectedWeek) {
+        const response = await fetch(`/get_games?week=${selectedWeek}`);
         const pulled_games = await response.json();
         const table = document.getElementById('gameTable');
+        
+        for(let i = table.rows.length - 1; i > 0; i--) {
+            table.deleteRow(i);
+        }
+
         const columns = ['Date','Away Team', 'Home Team']; 
         const lines_response = await fetch('/get_lines');
         const lines = await lines_response.json()
@@ -561,17 +580,69 @@
 
     }
 
-    document.getElementById('submitButton').addEventListener('click', submitData);
 
-    fetchGames().then(() => {
-        submitData();
+    // Populate dropdown
+    let selectedWeek;
+    async function populateDropdown() {
+        const weekSelector = document.getElementById('weekSelector');
+        weekSelector.innerHTML = "";
+
+        const response = await fetch('/get_weeks');
+        const data = await response.json();
+        
+        data.forEach((week, index) => {
+            const option = document.createElement('option');
+            option.value = week;
+            option.text = `Week ${week}`;
+            weekSelector.appendChild(option);
+
+            if (index === 0) {
+                selectedWeek = week;
+            }
+        });
+    }
+    
+    
+    // Get new games when new week selected
+    document.getElementById('weekSelector').addEventListener('change', function(event) {
+        selectedWeek = event.target.value;
+        getNew();
     });
 
-    document.addEventListener('keydown', function(event) {
-    if (event.keyCode === 13) {  
-        submitData();
+
+    // Initial load
+    function loadThings() { 
+        populateDropdown()
+        .then(() => fetchGames(selectedWeek))
+        .then(() => submitData())
+        .catch(error => console.error(error));
     }
-});
+
+    // Get new
+    async function getNew() {
+        const table = document.getElementById('gameTable');
+        table.style.opacity = "0.5";
+
+        try {
+            await fetchGames(selectedWeek);
+            await submitData();
+            table.style.opacity = "1";
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+
+    // Submit on click, enter, and pageload
+    loadThings();
+
+    document.getElementById('submitButton').addEventListener('click', submitData);
+
+    document.addEventListener('keydown', function(event) {
+        if (event.keyCode === 13) {  
+            submitData();
+        }
+    });
 
 
 </script>
