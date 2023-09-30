@@ -571,32 +571,35 @@
         let previousValue;
         let divText = div.children[1];
 
-        function showAndReset() {
-            // Fade out
-            divText.style.opacity = 0;
-
-            setTimeout(() => {
-                // Update text and fade in
-                previousValue = divText.textContent;
-                divText.textContent = `(${div.dataset.proba}%)`;
-                divText.style.opacity = 1;
-
+        function handleEnter() {
+            if (divText.textContent !== `(${div.dataset.proba}%)`){
+                divText.style.opacity = 0;
                 setTimeout(() => {
-                    divText.style.opacity = 0;
+                    previousValue = divText.textContent;
+                    divText.textContent = `(${div.dataset.proba}%)`;
+                    divText.style.opacity = 1;
+                }, 300);
+            }
 
-                    setTimeout(() => {
-                        divText.textContent = previousValue;
-                        divText.style.opacity = 1;
-                    }, 300); 
-                }, 1000);  
-            }, 300); 
+        }
+
+        function handleLeave() {
+            if (previousValue !== undefined) {
+                divText.style.opacity = 0;
+                setTimeout(() => {
+                    divText.textContent = previousValue;
+                    divText.style.opacity = 1;
+                }, 300);
+            }
         }
 
         // For desktop
-        div.addEventListener('mouseenter', showAndReset);
+        div.addEventListener('mouseenter', handleEnter);
+        div.addEventListener('mouseleave', handleLeave);
 
         // For mobile
-        div.addEventListener('touchstart', showAndReset);
+        div.addEventListener('touchstart', handleEnter);
+        div.addEventListener('touchend', handleLeave);
     }
 
     // Populate dropdown

@@ -14,6 +14,10 @@ with open('Source/Data/lines.json','r') as f:
     lines = json.load(f)
 
 app = Flask(__name__, template_folder="Templates", static_folder="Static", static_url_path="/Static")
+app.config.update(
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_SAMESITE='None',
+)
 app.secret_key = 'green-flounder'
 
 # get week, season
