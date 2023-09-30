@@ -584,6 +584,7 @@
                 setTimeout(() => {
                     divText.style.opacity = 0;
                     setTimeout(() => {
+                        divText.textContent = "";
                         divText.textContent = previousValue;
                         divText.style.opacity = 1;
                     }, 300);
