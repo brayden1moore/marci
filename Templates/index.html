@@ -96,12 +96,14 @@
         cursor: pointer;
     }
     .winner-wrapper {
+        cursor: default;
         position: relative;
         width: 100%;  
         text-align: center; 
         display: flex;
         justify-content: center;
         align-items: center;
+        transition: 0.3s ease;
     }
     .winner-image {
         height: auto;
@@ -109,31 +111,15 @@
         transition: 0.3s ease;
     }
 
-    .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.8);
-        color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    .winner-wrapper:hover .overlay {
-        opacity: 1;
-    }
     .over-under-wrapper {
+        cursor: default;
         position: relative;
         width: 100%;
         height: 50px; 
         display: flex;
         align-items: center;  
         justify-content: center; 
-        transition: opacity 0.3s ease;
+        transition: 0.3s ease;
     }
     .over-under-text {
         display: inline-block;
@@ -240,11 +226,6 @@
     .emoji {
         margin-left: 5px;
         color: rgb(255, 255, 255);
-    }
-
-    .emoji:hover{
-        color:#ffffff;
-        font-weight: bold;
         transition: 0.3s ease;
     }
 
@@ -513,13 +494,14 @@
                     const winnerEmojiDiv = document.createElement('div');
                     winnerEmojiDiv.className = 'emoji';
 
+                    wrapperDiv.dataset.proba = (moneyline.Probabilities[0] * 100).toFixed(0);
                     if (moneyline.Winner[0] === moneyline.Result) {
                         winnerEmojiDiv.textContent = '✅';
                     } else {
                         winnerEmojiDiv.textContent = '❌';
                     }
                     if (moneyline.Result === 'N/A') {
-                        winnerEmojiDiv.textContent = `(${(moneyline.Probabilities[0] * 100).toFixed(0)}%)`;
+                        winnerEmojiDiv.textContent = `(${wrapperDiv.dataset.proba}%)`;
                     }
                     wrapperDiv.appendChild(winnerEmojiDiv);
 
@@ -558,13 +540,14 @@
                     const overEmojiDiv = document.createElement('div');
                     overEmojiDiv.className = 'emoji';
 
+                    overUnderDiv.dataset.proba = (data.over_unders[index]['Probability'][0] * 100).toFixed(0);
                     if (data.over_unders[index]['Over/Under'][0] === data.over_unders[index]['Result']) {
                         overEmojiDiv.textContent = '✅';
                     } else {
                         overEmojiDiv.textContent = '❌';
                     }
                     if (data.over_unders[index]['Result'] === 'N/A') {
-                        overEmojiDiv.textContent = `(${(data.over_unders[index]['Probability'][0] * 100).toFixed(0)}%)`;
+                        overEmojiDiv.textContent = `(${overUnderDiv.dataset.proba}%)`;
                     }
                     overUnderDiv.appendChild(overEmojiDiv);
 
@@ -573,13 +556,51 @@
                     }, 10);
 
                     overUnderCell.appendChild(overUnderDiv);
-                
+
+                    showProbabilityOnHover(wrapperDiv);
+                    showProbabilityOnHover(overUnderDiv);
+                    
                 });
             }
             });
 
     }
 
+    //Hover listener
+    function showProbabilityOnHover(div) {
+        let previousValue;
+        let divText = div.children[1];
+
+        function handleEnter() {
+            if (divText.textContent !== `(${div.dataset.proba}%)`){
+                divText.style.opacity = 0;
+                setTimeout(() => {
+                    previousValue = divText.textContent;
+                    divText.textContent = `(${div.dataset.proba}%)`;
+                    divText.style.opacity = 1;
+                }, 300);
+            }
+
+        }
+
+        function handleLeave() {
+            if (previousValue !== undefined) {
+                divText.style.opacity = 0;
+                setTimeout(() => {
+                    divText.textContent = previousValue;
+                    divText.style.opacity = 1;
+                }, 300);
+            }
+        }
+
+        // For desktop
+        div.addEventListener('mouseenter', handleEnter);
+        div.addEventListener('mouseleave', handleLeave);
+
+        // For mobile
+        div.addEventListener('touchstart', handleEnter);
+        div.addEventListener('touchend', handleLeave);
+    }
 
     // Populate dropdown
     let selectedWeek;
