@@ -574,32 +574,28 @@
         function handleEnter() {
             if (divText.textContent !== `(${div.dataset.proba}%)`){
                 divText.style.opacity = 0;
+
                 setTimeout(() => {
                     previousValue = divText.textContent;
                     divText.textContent = `(${div.dataset.proba}%)`;
                     divText.style.opacity = 1;
                 }, 300);
-            }
 
-        }
-
-        function handleLeave() {
-            if (previousValue !== undefined) {
-                divText.style.opacity = 0;
                 setTimeout(() => {
-                    divText.textContent = previousValue;
-                    divText.style.opacity = 1;
-                }, 300);
+                    divText.style.opacity = 0;
+                    setTimeout(() => {
+                        divText.textContent = previousValue;
+                        divText.style.opacity = 1;
+                    }, 300);
+                }, 1000);
             }
+
         }
 
         // For desktop
         div.addEventListener('mouseenter', handleEnter);
-        div.addEventListener('mouseleave', handleLeave);
-
         // For mobile
         div.addEventListener('touchstart', handleEnter);
-        div.addEventListener('touchend', handleLeave);
     }
 
     // Populate dropdown
