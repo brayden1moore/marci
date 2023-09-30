@@ -570,9 +570,14 @@
     function showProbabilityOnHover(div) {
         let previousValue;
         let divText = div.children[1];
+        let eventProcessed = false;
 
         function handleEnter() {
-            if (divText.textContent !== `(${div.dataset.proba}%)`){
+            if (eventProcessed) return;  // Skip if an event has already been processed
+
+            eventProcessed = true;
+
+            if (divText.textContent !== `(${div.dataset.proba}%)`) {
                 divText.style.opacity = 0;
 
                 setTimeout(() => {
@@ -584,13 +589,12 @@
                 setTimeout(() => {
                     divText.style.opacity = 0;
                     setTimeout(() => {
-                        divText.textContent = "";
                         divText.textContent = previousValue;
                         divText.style.opacity = 1;
+                        eventProcessed = false;  // Reset the flag
                     }, 300);
                 }, 1000);
             }
-
         }
 
         // For desktop
