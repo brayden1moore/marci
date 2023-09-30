@@ -25,6 +25,7 @@ available_weeks.reverse()
 # load current data by default
 @app.route('/')
 def index():
+    print(current_week)
     session['selected_week'] = current_week
     session[f'games_week_{current_week}'] = current_games.to_json()
     return render_template('index.html', **record)
