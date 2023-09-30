@@ -38,8 +38,10 @@ def get_weeks():
 # send lines to front end
 @app.route('/get_lines')
 def get_lines():
-    session['selected_week'] = (current_week if session['selected_week'] is None else session['selected_week'])
-    return jsonify(lines[str(session.get('selected_week'))])
+    try:
+        return jsonify(lines[str(session.get('selected_week'))])
+    except:
+        return jsonify(lines[str(current_week)])
 
 # send games of selected week to front end
 @app.route('/get_games')
