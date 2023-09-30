@@ -117,7 +117,7 @@ def predict(home,away,season,week,total):
     matrix = xgb.DMatrix(data.astype(float).values)
 
     # create game id 
-    game_id = str(season) + '_0' + str(week) + '_' + away_abbrev + '_' + home_abbrev
+    game_id = str(season) + '_0' + str(int(week)) + '_' + away_abbrev + '_' + home_abbrev
     print(game_id)
 
     try:
