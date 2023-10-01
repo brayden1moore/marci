@@ -33,7 +33,6 @@
         color: #f2f2f2;
         margin: 0px;
     }
-
     table {
         transition: 0.3s ease;
         margin-top: 20px;
@@ -110,7 +109,6 @@
         margin: 0;
         transition: 0.3s ease;
     }
-
     .over-under-wrapper {
         cursor: default;
         position: relative;
@@ -136,24 +134,19 @@
     .na {
         color: white;
     }
-
     .highlight {
         background: rgb(30, 30, 30) !important;
         border: 2px solid rgb(30, 30, 30)  !important;
         border-radius: 10px  !important;
     }
-
     .force-repaint { transform: translateZ(0); }
-
     .hidden {
         opacity: 0;
     }
-
     .section-container {
         display: flex;
         justify-content: space-between;
     }
-
     .section {
         padding: 30px;
         text-align: left;
@@ -162,18 +155,15 @@
         border-color: rgb(61, 61, 61);
         width: 48%; 
     }
-
     .content {
         width: 100%;
     }
-
     .content img {
         width: 100%;
         height: auto;
         margin-top: 20px;
         margin-bottom: 20px;
     }
-
     .divider {
         border: 0;
         height: 1px;
@@ -182,19 +172,15 @@
         margin-bottom: 50px;
         width: 80%;
     }
-
     .label {
         color: rgb(114, 114, 114);
     }
-
     .info {
         color: white;
     }
-
     a {
       color: white;
     }
-
     .scroll-banner {
         position: fixed;
         top: 0;
@@ -209,7 +195,6 @@
         overflow: hidden;
         visibility: hidden;
     }
-
     .scroll-text {
         font-family: 'Helvetica';
         color: white;
@@ -217,18 +202,15 @@
         animation: scrolling 10s linear infinite;
         white-space: nowrap;
     }
-
     @keyframes scrolling {
         0% { transform: translateX(100vw); }
         100% { transform: translateX(-100%); }
     }
-
     .emoji {
         margin-left: 5px;
         color: rgb(255, 255, 255);
         transition: 0.3s ease;
     }
-
     .spinner {
         margin: auto;
         display: block;
@@ -251,12 +233,10 @@
         -webkit-text-fill-color: transparent;
         font-weight: bold;
     }
-
     #modelDetails {
         width: 80%;
         display: inline-block;
     }
-
     #weekSelector {
         transition: 0.3s ease;
         border-radius: 10px;
@@ -265,7 +245,9 @@
         background: rgb(30, 30, 30) !important;
         font-family: Arial, Helvetica, sans-serif;
     }
-
+    #weekSelector:hover {
+        opacity: 0.5;
+    }
     @keyframes spin {
         0% {
             transform: rotate(0deg);
@@ -274,7 +256,6 @@
             transform: rotate(360deg);
         }
     }
-
     @media screen and (max-width: 768px) {
         .table-div {
             display: block;
@@ -299,7 +280,6 @@
             width: 90%;
         }
     }
-
 </style>
 
 <div class="scroll-banner">
@@ -389,11 +369,9 @@
         for(let i = table.rows.length - 1; i > 0; i--) {
             table.deleteRow(i);
         }
-
         const columns = ['Date','Away Team', 'Home Team']; 
         const lines_response = await fetch('/get_lines');
         const lines = await lines_response.json()
-
         pulled_games.forEach((game, index) => {
             const row = table.insertRow(-1);
             
@@ -422,15 +400,11 @@
             }
             });
     }
-
-
     function submitData() {
         const predictButton = document.getElementById('submitButton');
-
         const table = document.getElementById('gameTable');
         const rows = table.querySelectorAll('tr');
         const games = [];
-
         rows.forEach((row, index) => {
             if (index === 0) return;
             
@@ -442,10 +416,8 @@
             overUnderCell.innerHTML = ''; 
             winnerCell.appendChild(spinnerDiv);
             overUnderCell.appendChild(spinnerDiv.cloneNode(true));
-
             const cells = row.querySelectorAll('td');
             const game = {};
-
             game.Date = cells[0].textContent;
             game.AwayTeam = cells[1].querySelector('img').alt;
             game.HomeTeam = cells[2].querySelector('img').alt;
@@ -453,8 +425,6 @@
             game.rowIndex = index - 1;  
             games.push(game);
         });
-
-
         fetch('/submit_games', {
             method: 'POST',
             headers: {
@@ -467,14 +437,11 @@
             if (data.moneylines && data.over_unders) {
                 const table = document.getElementById('gameTable');
                 const rows = table.querySelectorAll('tr');
-
                 data.moneylines.forEach((moneyline, index) => {
                     const row = rows[parseInt(moneyline.rowIndex) + 1];
-
                     const winnerCell = row.cells[row.cells.length - 2];
                     winnerCell.removeChild(winnerCell.querySelector('.spinner'));
                     winnerCell.innerHTML = ''; 
-
                     const wrapperDiv = document.createElement('div');
                     wrapperDiv.className = 'winner-wrapper';
                     if (moneyline.Probabilities[0] > 0.6){
@@ -483,17 +450,14 @@
                     else {
                         wrapperDiv.style.opacity = "0.5";
                     }
-
                     const winnerImg = document.createElement('img');
                     winnerImg.src = `/Static/${moneyline.Winner}.webp`;
                     winnerImg.alt = moneyline.Winner;
                     winnerImg.width = 50;  
                     winnerImg.className = 'winner-image hidden';
                     wrapperDiv.appendChild(winnerImg);
-
                     const winnerEmojiDiv = document.createElement('div');
                     winnerEmojiDiv.className = 'emoji';
-
                     wrapperDiv.dataset.proba = (moneyline.Probabilities[0] * 100).toFixed(0);
                     if (moneyline.Winner[0] === moneyline.Result) {
                         winnerEmojiDiv.textContent = '✅';
@@ -504,17 +468,13 @@
                         winnerEmojiDiv.textContent = `(${wrapperDiv.dataset.proba}%)`;
                     }
                     wrapperDiv.appendChild(winnerEmojiDiv);
-
                     setTimeout(() => {
                         winnerImg.classList.remove('hidden');
                     }, 10);
-
                     winnerCell.appendChild(wrapperDiv);
-
                     const overUnderCell = row.cells[row.cells.length - 1];
                     overUnderCell.removeChild(overUnderCell.querySelector('.spinner'));
                     overUnderCell.innerHTML = ''; 
-
                     const overUnderDiv = document.createElement('div');
                     overUnderDiv.className = 'over-under-wrapper hidden';
                     if (data.over_unders[index]['Probability'][0] > 0.6){
@@ -523,7 +483,6 @@
                     else {
                         overUnderDiv.style.opacity = "0.5";
                     }
-
                     const textDiv = document.createElement('div');
                     textDiv.className = 'over-under-text';
                     textDiv.textContent = data.over_unders[index]['Over/Under'];
@@ -534,12 +493,9 @@
                     } else {
                         overUnderDiv.className += ' na';
                     }
-
                     overUnderDiv.appendChild(textDiv);
-
                     const overEmojiDiv = document.createElement('div');
                     overEmojiDiv.className = 'emoji';
-
                     overUnderDiv.dataset.proba = (data.over_unders[index]['Probability'][0] * 100).toFixed(0);
                     if (data.over_unders[index]['Over/Under'][0] === data.over_unders[index]['Result']) {
                         overEmojiDiv.textContent = '✅';
@@ -550,42 +506,32 @@
                         overEmojiDiv.textContent = `(${overUnderDiv.dataset.proba}%)`;
                     }
                     overUnderDiv.appendChild(overEmojiDiv);
-
                     setTimeout(() => {
                         overUnderDiv.classList.remove('hidden');
                     }, 10);
-
                     overUnderCell.appendChild(overUnderDiv);
-
                     showProbabilityOnHover(wrapperDiv);
                     showProbabilityOnHover(overUnderDiv);
                     
                 });
             }
             });
-
     }
-
     //Hover listener
     function showProbabilityOnHover(div) {
         let previousValue;
         let divText = div.children[1];
         let eventProcessed = false;
-
         function handleEnter() {
             if (eventProcessed) return;  // Skip if an event has already been processed
-
             eventProcessed = true;
-
             if (divText.textContent !== `(${div.dataset.proba}%)`) {
                 divText.style.opacity = 0;
-
                 setTimeout(() => {
                     previousValue = divText.textContent;
                     divText.textContent = `(${div.dataset.proba}%)`;
                     divText.style.opacity = 1;
                 }, 300);
-
                 setTimeout(() => {
                     divText.style.opacity = 0;
                     setTimeout(() => {
@@ -596,19 +542,16 @@
                 }, 1000);
             }
         }
-
         // For desktop
         div.addEventListener('mouseenter', handleEnter);
         // For mobile
         div.addEventListener('touchstart', handleEnter);
     }
-
     // Populate dropdown
     let selectedWeek;
     async function populateDropdown() {
         const weekSelector = document.getElementById('weekSelector');
         weekSelector.innerHTML = "";
-
         const response = await fetch('/get_weeks');
         const data = await response.json();
         
@@ -617,7 +560,6 @@
             option.value = week;
             option.text = `Week ${week}`;
             weekSelector.appendChild(option);
-
             if (index === 0) {
                 selectedWeek = week;
             }
@@ -630,8 +572,6 @@
         selectedWeek = event.target.value;
         getNew();
     });
-
-
     // Initial load
     function loadThings() { 
         populateDropdown()
@@ -639,12 +579,10 @@
         .then(() => submitData())
         .catch(error => console.error(error));
     }
-
     // Get new
     async function getNew() {
         const table = document.getElementById('gameTable');
         table.style.opacity = "0.5";
-
         try {
             await fetchGames(selectedWeek);
             await submitData();
@@ -653,20 +591,14 @@
             console.error(error);
         }
     }
-
-
     // Submit on click, enter, and pageload
     loadThings();
-
     document.getElementById('submitButton').addEventListener('click', submitData);
-
     document.addEventListener('keydown', function(event) {
         if (event.keyCode === 13) {  
             submitData();
         }
     });
-
-
 </script>
 
 </body>
