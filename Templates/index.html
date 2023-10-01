@@ -252,7 +252,7 @@
         font-weight: bold;
     }
 
-    #modelDetails {
+    .modelDetails {
         width: 80%;
         display: inline-block;
     }
@@ -344,8 +344,8 @@
 
     <hr class="divider"> 
 
-    <div id="modelDetails">
-        <h2>Model Details</h2>
+    <div class="modelDetails">
+        <h2>Model Details (Backtest)</h2>
         <div class="section-container">
             <div class="section">
                 <h3>Moneyline</h3>
@@ -373,6 +373,24 @@
                         <span class="label">Learning Rate:</span> 0.05<br>
                         <span class="label">Epochs:</span> 300
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modelDetails">
+        <h2>Model Performance (This Year)</h2>
+        <div class="section-container">
+            <div class="section">
+                <h3>Moneyline</h3>
+                <div class="content">
+                    <img src="/Static/Winner_Predictions_dark.png" alt="Moneyline Accuracy">
+                </div>
+            </div>
+            <div class="section">
+                <h3>Over/Under</h3>
+                <div class="content">
+                    <img src="/Static/Over_Under_Predictions_dark.png" alt="Over/Under Model">
                 </div>
             </div>
         </div>
