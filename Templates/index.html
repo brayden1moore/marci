@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
     <link rel="shortcut icon" type="image/x-icon" href="https://images.squarespace-cdn.com/content/v1/64790f5777b5d772678cce83/6d71eaee-f825-4324-be9b-2def32469eac/favicon.ico?format=100w">
-    <title>MARCI - NFL Betting</title>
+    <title>MARCI</title>
 </head>
 <style>
     body {
@@ -33,6 +33,7 @@
         color: #f2f2f2;
         margin: 0px;
     }
+
     table {
         transition: 0.3s ease;
         margin-top: 20px;
@@ -109,13 +110,7 @@
         margin: 0;
         transition: 0.3s ease;
     }
-<<<<<<< HEAD
-=======
 
-<<<<<<< HEAD
->>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
-=======
->>>>>>> origin/main
     .over-under-wrapper {
         cursor: default;
         position: relative;
@@ -141,19 +136,24 @@
     .na {
         color: white;
     }
+
     .highlight {
         background: rgb(30, 30, 30) !important;
         border: 2px solid rgb(30, 30, 30)  !important;
         border-radius: 10px  !important;
     }
+
     .force-repaint { transform: translateZ(0); }
+
     .hidden {
         opacity: 0;
     }
+
     .section-container {
         display: flex;
         justify-content: space-between;
     }
+
     .section {
         padding: 30px;
         text-align: left;
@@ -162,15 +162,18 @@
         border-color: rgb(61, 61, 61);
         width: 48%; 
     }
+
     .content {
         width: 100%;
     }
+
     .content img {
         width: 100%;
         height: auto;
         margin-top: 20px;
         margin-bottom: 20px;
     }
+
     .divider {
         border: 0;
         height: 1px;
@@ -179,15 +182,19 @@
         margin-bottom: 50px;
         width: 80%;
     }
+
     .label {
         color: rgb(114, 114, 114);
     }
+
     .info {
         color: white;
     }
+
     a {
       color: white;
     }
+
     .scroll-banner {
         position: fixed;
         top: 0;
@@ -202,6 +209,7 @@
         overflow: hidden;
         visibility: hidden;
     }
+
     .scroll-text {
         font-family: 'Helvetica';
         color: white;
@@ -209,15 +217,18 @@
         animation: scrolling 10s linear infinite;
         white-space: nowrap;
     }
+
     @keyframes scrolling {
         0% { transform: translateX(100vw); }
         100% { transform: translateX(-100%); }
     }
+
     .emoji {
         margin-left: 5px;
         color: rgb(255, 255, 255);
         transition: 0.3s ease;
     }
+
     .spinner {
         margin: auto;
         display: block;
@@ -240,17 +251,12 @@
         -webkit-text-fill-color: transparent;
         font-weight: bold;
     }
+
     #modelDetails {
         width: 80%;
         display: inline-block;
     }
-<<<<<<< HEAD
-=======
 
-<<<<<<< HEAD
->>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
-=======
->>>>>>> origin/main
     #weekSelector {
         transition: 0.3s ease;
         border-radius: 10px;
@@ -262,14 +268,7 @@
     #weekSelector:hover {
         opacity: 0.5;
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
->>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
-=======
-
->>>>>>> origin/main
     @keyframes spin {
         0% {
             transform: rotate(0deg);
@@ -278,6 +277,7 @@
             transform: rotate(360deg);
         }
     }
+
     @media screen and (max-width: 768px) {
         .table-div {
             display: block;
@@ -302,6 +302,7 @@
             width: 90%;
         }
     }
+
 </style>
 
 <div class="scroll-banner">
@@ -391,17 +392,11 @@
         for(let i = table.rows.length - 1; i > 0; i--) {
             table.deleteRow(i);
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
->>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
-=======
-
->>>>>>> origin/main
         const columns = ['Date','Away Team', 'Home Team']; 
         const lines_response = await fetch('/get_lines');
         const lines = await lines_response.json()
+
         pulled_games.forEach((game, index) => {
             const row = table.insertRow(-1);
             
@@ -430,11 +425,15 @@
             }
             });
     }
+
+
     function submitData() {
         const predictButton = document.getElementById('submitButton');
+
         const table = document.getElementById('gameTable');
         const rows = table.querySelectorAll('tr');
         const games = [];
+
         rows.forEach((row, index) => {
             if (index === 0) return;
             
@@ -446,8 +445,10 @@
             overUnderCell.innerHTML = ''; 
             winnerCell.appendChild(spinnerDiv);
             overUnderCell.appendChild(spinnerDiv.cloneNode(true));
+
             const cells = row.querySelectorAll('td');
             const game = {};
+
             game.Date = cells[0].textContent;
             game.AwayTeam = cells[1].querySelector('img').alt;
             game.HomeTeam = cells[2].querySelector('img').alt;
@@ -455,6 +456,8 @@
             game.rowIndex = index - 1;  
             games.push(game);
         });
+
+
         fetch('/submit_games', {
             method: 'POST',
             headers: {
@@ -467,11 +470,14 @@
             if (data.moneylines && data.over_unders) {
                 const table = document.getElementById('gameTable');
                 const rows = table.querySelectorAll('tr');
+
                 data.moneylines.forEach((moneyline, index) => {
                     const row = rows[parseInt(moneyline.rowIndex) + 1];
+
                     const winnerCell = row.cells[row.cells.length - 2];
                     winnerCell.removeChild(winnerCell.querySelector('.spinner'));
                     winnerCell.innerHTML = ''; 
+
                     const wrapperDiv = document.createElement('div');
                     wrapperDiv.className = 'winner-wrapper';
                     if (moneyline.Probabilities[0] > 0.6){
@@ -480,21 +486,17 @@
                     else {
                         wrapperDiv.style.opacity = "0.5";
                     }
+
                     const winnerImg = document.createElement('img');
                     winnerImg.src = `/Static/${moneyline.Winner}.webp`;
                     winnerImg.alt = moneyline.Winner;
                     winnerImg.width = 50;  
                     winnerImg.className = 'winner-image hidden';
                     wrapperDiv.appendChild(winnerImg);
+
                     const winnerEmojiDiv = document.createElement('div');
                     winnerEmojiDiv.className = 'emoji';
-<<<<<<< HEAD
-=======
 
-<<<<<<< HEAD
->>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
-=======
->>>>>>> origin/main
                     wrapperDiv.dataset.proba = (moneyline.Probabilities[0] * 100).toFixed(0);
                     if (moneyline.Winner[0] === moneyline.Result) {
                         winnerEmojiDiv.textContent = '✅';
@@ -505,13 +507,17 @@
                         winnerEmojiDiv.textContent = `(${wrapperDiv.dataset.proba}%)`;
                     }
                     wrapperDiv.appendChild(winnerEmojiDiv);
+
                     setTimeout(() => {
                         winnerImg.classList.remove('hidden');
                     }, 10);
+
                     winnerCell.appendChild(wrapperDiv);
+
                     const overUnderCell = row.cells[row.cells.length - 1];
                     overUnderCell.removeChild(overUnderCell.querySelector('.spinner'));
                     overUnderCell.innerHTML = ''; 
+
                     const overUnderDiv = document.createElement('div');
                     overUnderDiv.className = 'over-under-wrapper hidden';
                     if (data.over_unders[index]['Probability'][0] > 0.6){
@@ -520,6 +526,7 @@
                     else {
                         overUnderDiv.style.opacity = "0.5";
                     }
+
                     const textDiv = document.createElement('div');
                     textDiv.className = 'over-under-text';
                     textDiv.textContent = data.over_unders[index]['Over/Under'];
@@ -530,16 +537,12 @@
                     } else {
                         overUnderDiv.className += ' na';
                     }
+
                     overUnderDiv.appendChild(textDiv);
+
                     const overEmojiDiv = document.createElement('div');
                     overEmojiDiv.className = 'emoji';
-<<<<<<< HEAD
-=======
 
-<<<<<<< HEAD
->>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
-=======
->>>>>>> origin/main
                     overUnderDiv.dataset.proba = (data.over_unders[index]['Probability'][0] * 100).toFixed(0);
                     if (data.over_unders[index]['Over/Under'][0] === data.over_unders[index]['Result']) {
                         overEmojiDiv.textContent = '✅';
@@ -550,157 +553,21 @@
                         overEmojiDiv.textContent = `(${overUnderDiv.dataset.proba}%)`;
                     }
                     overUnderDiv.appendChild(overEmojiDiv);
+
                     setTimeout(() => {
                         overUnderDiv.classList.remove('hidden');
                     }, 10);
+
                     overUnderCell.appendChild(overUnderDiv);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
->>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
-=======
-
->>>>>>> origin/main
                     showProbabilityOnHover(wrapperDiv);
                     showProbabilityOnHover(overUnderDiv);
                     
                 });
             }
             });
+
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
-    //Hover listener
-    function showProbabilityOnHover(div) {
-        let previousValue;
-        let divText = div.children[1];
-        let eventProcessed = false;
-<<<<<<< HEAD
-        function handleEnter() {
-            if (eventProcessed) return;  // Skip if an event has already been processed
-            eventProcessed = true;
-            if (divText.textContent !== `(${div.dataset.proba}%)`) {
-                divText.style.opacity = 0;
-=======
-
-        function handleEnter() {
-            if (eventProcessed) return;  // Skip if an event has already been processed
-
-            eventProcessed = true;
-
-            if (divText.textContent !== `(${div.dataset.proba}%)`) {
-                divText.style.opacity = 0;
-
->>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
-                setTimeout(() => {
-                    previousValue = divText.textContent;
-                    divText.textContent = `(${div.dataset.proba}%)`;
-                    divText.style.opacity = 1;
-                }, 300);
-<<<<<<< HEAD
-=======
-
->>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
-                setTimeout(() => {
-                    divText.style.opacity = 0;
-                    setTimeout(() => {
-                        divText.textContent = previousValue;
-                        divText.style.opacity = 1;
-                        eventProcessed = false;  // Reset the flag
-                    }, 300);
-                }, 1000);
-            }
-        }
-<<<<<<< HEAD
-=======
-
->>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
-        // For desktop
-        div.addEventListener('mouseenter', handleEnter);
-        // For mobile
-        div.addEventListener('touchstart', handleEnter);
-    }
-<<<<<<< HEAD
-=======
-
->>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
-    // Populate dropdown
-    let selectedWeek;
-    async function populateDropdown() {
-        const weekSelector = document.getElementById('weekSelector');
-        weekSelector.innerHTML = "";
-<<<<<<< HEAD
-=======
-
->>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
-        const response = await fetch('/get_weeks');
-        const data = await response.json();
-        
-        data.forEach((week, index) => {
-            const option = document.createElement('option');
-            option.value = week;
-            option.text = `Week ${week}`;
-            weekSelector.appendChild(option);
-<<<<<<< HEAD
-=======
-
->>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
-            if (index === 0) {
-                selectedWeek = week;
-            }
-        });
-    }
-    
-    
-    // Get new games when new week selected
-    document.getElementById('weekSelector').addEventListener('change', function(event) {
-        selectedWeek = event.target.value;
-        getNew();
-    });
-<<<<<<< HEAD
-=======
-
-
->>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
-    // Initial load
-    function loadThings() { 
-        populateDropdown()
-        .then(() => fetchGames(selectedWeek))
-        .then(() => submitData())
-        .catch(error => console.error(error));
-    }
-<<<<<<< HEAD
-=======
-
->>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
-    // Get new
-    async function getNew() {
-        const table = document.getElementById('gameTable');
-        table.style.opacity = "0.5";
-<<<<<<< HEAD
-=======
-
->>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
-        try {
-            await fetchGames(selectedWeek);
-            await submitData();
-            table.style.opacity = "1";
-        } catch (error) {
-            console.error(error);
-        }
-    }
-<<<<<<< HEAD
-    // Submit on click, enter, and pageload
-    loadThings();
-    document.getElementById('submitButton').addEventListener('click', submitData);
-=======
-
-
-    // Submit on click, enter, and pageload
-    loadThings();
 
     //Hover listener
     function showProbabilityOnHover(div) {
@@ -708,9 +575,6 @@
         let divText = div.children[1];
         let eventProcessed = false;
 
-<<<<<<< HEAD
->>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
-=======
         function handleEnter() {
             if (eventProcessed) return;  // Skip if an event has already been processed
 
@@ -799,20 +663,13 @@
 
     document.getElementById('submitButton').addEventListener('click', submitData);
 
->>>>>>> origin/main
     document.addEventListener('keydown', function(event) {
         if (event.keyCode === 13) {  
             submitData();
         }
     });
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> origin/main
 
 
->>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
 </script>
 
 </body>
