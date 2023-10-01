@@ -5,6 +5,7 @@ git add "Source\Data\gbg_and_odds_this_year.csv"
 git add "Source\Data\gbg_this_year.csv"
 git add "Source\Data\results.csv"
 git add "Source\Data\record.json"
-git commit -m "Update with 2023 data"
+git add "Source\Data\lines.json"
+git commit -m "Update with up to date data"
 git push
 pause
