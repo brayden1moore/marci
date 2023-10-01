@@ -109,6 +109,10 @@
         margin: 0;
         transition: 0.3s ease;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
     .over-under-wrapper {
         cursor: default;
         position: relative;
@@ -237,6 +241,10 @@
         width: 80%;
         display: inline-block;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
     #weekSelector {
         transition: 0.3s ease;
         border-radius: 10px;
@@ -248,6 +256,10 @@
     #weekSelector:hover {
         opacity: 0.5;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
     @keyframes spin {
         0% {
             transform: rotate(0deg);
@@ -369,6 +381,10 @@
         for(let i = table.rows.length - 1; i > 0; i--) {
             table.deleteRow(i);
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
         const columns = ['Date','Away Team', 'Home Team']; 
         const lines_response = await fetch('/get_lines');
         const lines = await lines_response.json()
@@ -458,6 +474,10 @@
                     wrapperDiv.appendChild(winnerImg);
                     const winnerEmojiDiv = document.createElement('div');
                     winnerEmojiDiv.className = 'emoji';
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
                     wrapperDiv.dataset.proba = (moneyline.Probabilities[0] * 100).toFixed(0);
                     if (moneyline.Winner[0] === moneyline.Result) {
                         winnerEmojiDiv.textContent = '✅';
@@ -496,6 +516,10 @@
                     overUnderDiv.appendChild(textDiv);
                     const overEmojiDiv = document.createElement('div');
                     overEmojiDiv.className = 'emoji';
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
                     overUnderDiv.dataset.proba = (data.over_unders[index]['Probability'][0] * 100).toFixed(0);
                     if (data.over_unders[index]['Over/Under'][0] === data.over_unders[index]['Result']) {
                         overEmojiDiv.textContent = '✅';
@@ -510,6 +534,10 @@
                         overUnderDiv.classList.remove('hidden');
                     }, 10);
                     overUnderCell.appendChild(overUnderDiv);
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
                     showProbabilityOnHover(wrapperDiv);
                     showProbabilityOnHover(overUnderDiv);
                     
@@ -517,21 +545,41 @@
             }
             });
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
     //Hover listener
     function showProbabilityOnHover(div) {
         let previousValue;
         let divText = div.children[1];
         let eventProcessed = false;
+<<<<<<< HEAD
         function handleEnter() {
             if (eventProcessed) return;  // Skip if an event has already been processed
             eventProcessed = true;
             if (divText.textContent !== `(${div.dataset.proba}%)`) {
                 divText.style.opacity = 0;
+=======
+
+        function handleEnter() {
+            if (eventProcessed) return;  // Skip if an event has already been processed
+
+            eventProcessed = true;
+
+            if (divText.textContent !== `(${div.dataset.proba}%)`) {
+                divText.style.opacity = 0;
+
+>>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
                 setTimeout(() => {
                     previousValue = divText.textContent;
                     divText.textContent = `(${div.dataset.proba}%)`;
                     divText.style.opacity = 1;
                 }, 300);
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
                 setTimeout(() => {
                     divText.style.opacity = 0;
                     setTimeout(() => {
@@ -542,16 +590,28 @@
                 }, 1000);
             }
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
         // For desktop
         div.addEventListener('mouseenter', handleEnter);
         // For mobile
         div.addEventListener('touchstart', handleEnter);
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
     // Populate dropdown
     let selectedWeek;
     async function populateDropdown() {
         const weekSelector = document.getElementById('weekSelector');
         weekSelector.innerHTML = "";
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
         const response = await fetch('/get_weeks');
         const data = await response.json();
         
@@ -560,6 +620,10 @@
             option.value = week;
             option.text = `Week ${week}`;
             weekSelector.appendChild(option);
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
             if (index === 0) {
                 selectedWeek = week;
             }
@@ -572,6 +636,11 @@
         selectedWeek = event.target.value;
         getNew();
     });
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
     // Initial load
     function loadThings() { 
         populateDropdown()
@@ -579,10 +648,18 @@
         .then(() => submitData())
         .catch(error => console.error(error));
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
     // Get new
     async function getNew() {
         const table = document.getElementById('gameTable');
         table.style.opacity = "0.5";
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
         try {
             await fetchGames(selectedWeek);
             await submitData();
@@ -591,14 +668,29 @@
             console.error(error);
         }
     }
+<<<<<<< HEAD
     // Submit on click, enter, and pageload
     loadThings();
     document.getElementById('submitButton').addEventListener('click', submitData);
+=======
+
+
+    // Submit on click, enter, and pageload
+    loadThings();
+
+    document.getElementById('submitButton').addEventListener('click', submitData);
+
+>>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
     document.addEventListener('keydown', function(event) {
         if (event.keyCode === 13) {  
             submitData();
         }
     });
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> a1fa974af6e4e1de31cb2ee976c254c2cc5b3c64
 </script>
 
 </body>
