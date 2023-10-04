@@ -29,7 +29,7 @@ available_weeks.reverse()
 # load current data by default
 @app.route('/')
 def index():
-    print(current_week)
+    print('Current Week', current_week)
     session['selected_week'] = current_week
     session[f'games_week_{current_week}'] = current_games.to_json()
     return render_template('index.html', **record)
@@ -55,7 +55,7 @@ def get_games():
 
     # If select a new week
     if requested_week and requested_week != current_week:
-        
+        print("Requested Week:", requested_week)
         # Check if that week's games are cached
         if session.get(f'games_week_{requested_week}'):
             print("Using cached games")
