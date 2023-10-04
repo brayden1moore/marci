@@ -57,7 +57,7 @@ def get_games():
     if requested_week and requested_week != current_week:
         print("Requested Week:", requested_week)
         # Check if that week's games are cached
-        if session.get(f'games_week_{requested_week}'):
+        if type(session.get(f'games_week_{requested_week}')) == list:
             print("Using cached games")
             print(session.get(f'games_week_{requested_week}'))
             games = session.get(f'games_week_{requested_week}')
