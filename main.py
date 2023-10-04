@@ -59,6 +59,7 @@ def get_games():
         # Check if that week's games are cached
         if session.get(f'games_week_{requested_week}'):
             print("Using cached games")
+            print(session.get(f'games_week_{requested_week}'))
             games = session.get(f'games_week_{requested_week}')
             games = json.loads(games)
             return jsonify(games)
