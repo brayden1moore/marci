@@ -96,7 +96,6 @@ def get_one_week(home,away,season,week):
         away_df.columns = [i.replace('.Away','') + '.Away' for i in away_df.columns]
 
         df = home_df.reset_index(drop=True).merge(away_df.reset_index(drop=True), left_index=True, right_index=True)
-        print(df)
         return df
     except ValueError:
         return pd.DataFrame()

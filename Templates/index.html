@@ -391,15 +391,20 @@
         <div class="section-container">
             <div class="section">
                 <h3>Moneyline</h3>
+                <div class="info">{{ winners_return }}.</div>
                 <div class="content">
                     <img src="/Static/Winner_Predictions_dark.png" alt="Moneyline Accuracy">
                 </div>
+                <div class="info"><span class="label">{{ winners_binom }}</span><br></div>
+
             </div>
             <div class="section">
                 <h3>Over/Under</h3>
+                <div class="info">{{ over_unders_return }}.</div>
                 <div class="content">
                     <img src="/Static/Over_Under_Predictions_dark.png" alt="Over/Under Model">
                 </div>
+                <div class="info"><span class="label">{{ over_unders_binom }}</span><br></div>
             </div>
         </div>
     </div>
