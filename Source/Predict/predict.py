@@ -31,6 +31,11 @@ file_path = os.path.join(pickle_directory, 'team_abbreviation_to_name.pkl')
 with open(file_path, 'rb') as f:
     team_abbreviation_to_name = pkl.load(f)
 
+# get schedule
+file_path = os.path.join(pickle_directory, 'schedule.pkl')
+with open(file_path, 'rb') as f:
+    schedule = pkl.load(f)
+
 # load models
 # moneyline
 model = 'xgboost_ML_no_odds_71.4%'
@@ -67,8 +72,9 @@ def get_week():
 
 def get_games(week):
     # pull from NBC
-    url = 'https://www.nbcsports.com/nfl/schedule'
-    df = pd.read_html(url)[week-1]
+    #url = 'https://www.nbcsports.com/nfl/schedule'
+    #df = pd.read_html(url)[week-1]
+    df = schedule[week-1]
     df['Away Team'] = [' '.join(i.split('\xa0')[1:]) for i in df['Away TeamAway Team']]
     df['Home Team'] = [' '.join(i.split('\xa0')[1:]) for i in df['Home TeamHome Team']]
     df['Date'] = pd.to_datetime(df['Game TimeGame Time'])
@@ -121,7 +127,6 @@ def predict(home,away,season,week,total):
 
     # create game id 
     game_id = str(season) + '_0' + str(int(week)) + '_' + away_abbrev + '_' + home_abbrev
-    print(game_id)
 
     try:
         moneyline_result = results.loc[results['game_id']==game_id, 'winner'].item()

@@ -26,6 +26,14 @@ year = dt.datetime.now().year
 month = dt.datetime.now().month
 current_season = year if month in [8,9,10,11,12] else year-1
 
+# get schedule
+print('Getting schedule.\n')
+url = 'https://www.nbcsports.com/nfl/schedule'
+df = pd.read_html(url)
+file_path = os.path.join(pickle_directory, 'schedule.pkl')
+with open(file_path, 'wb') as f:
+    pkl.dump(df, f)
+
 # update current season
 build.build_gbg_data(get_seasons=[current_season])
 #build.build_gbg_data(get_seasons=range(2014,2024))
@@ -33,7 +41,6 @@ build.add_odds_data()
 
 # get winners
 pbp = build.get_pbp_data([current_season])
-
 pbp = pbp.drop_duplicates(subset='game_id')
 pbp[['season','week','away','home']] = pbp['game_id'].str.split('_', expand=True)
 games = pbp[['game_id','away_score','home_score','season','week','away','home']]
