@@ -531,7 +531,11 @@
                     wrapperDiv.dataset.proba = (moneyline.Probabilities[0] * 100).toFixed(0);
                     if (moneyline.Winner[0] === moneyline.Result) {
                         winnerEmojiDiv.textContent = '✅';
-                    } else {
+                    } 
+                    else if (moneyline.Result === 'Tie') {
+                        winnerEmojiDiv.textContent = '(TIE)';
+                    }
+                    else {
                         winnerEmojiDiv.textContent = '❌';
                     }
                     if (moneyline.Result === 'N/A') {
@@ -577,7 +581,11 @@
                     overUnderDiv.dataset.proba = (data.over_unders[index]['Probability'][0] * 100).toFixed(0);
                     if (data.over_unders[index]['Over/Under'][0] === data.over_unders[index]['Result']) {
                         overEmojiDiv.textContent = '✅';
-                    } else {
+                    } 
+                    else if (data.over_unders[index]['Over/Under'][0] === 'Push') {
+                        overEmojiDiv.textContent = '(PUSH)';
+                    }
+                    else {
                         overEmojiDiv.textContent = '❌';
                     }
                     if (data.over_unders[index]['Result'] === 'N/A') {
