@@ -1,7 +1,7 @@
 ---
 title: MARCI
 emoji: 🏈
-colorFrom: grey
+colorFrom: red
 colorTo: blue
 sdk: docker
 pinned: false
