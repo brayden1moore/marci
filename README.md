@@ -1,7 +1,7 @@
 ---
-title: MARCI - NFL Betting
+title: MARCI NFL Betting
 emoji: 🏈
-colorFrom: grey
+colorFrom: blue
 colorTo: blue
 sdk: docker
 pinned: false
