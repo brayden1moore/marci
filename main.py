@@ -23,7 +23,7 @@ app.secret_key = 'green-flounder'
 # get week, season
 current_week, season = predict.get_week()
 current_games = predict.get_games(current_week)[['Date','Away Team','Home Team']]
-available_weeks = list(range(current_week+1))[2:]
+available_weeks = list(range(current_week+1))[3:]
 available_weeks.reverse()
 
 # load current data by default
