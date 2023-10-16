@@ -146,7 +146,7 @@ def predict(home,away,season,week,total):
     
     try:
         result = results.loc[results['game_id']==game_id, 'total'].item()
-        over_under_result = 'Over' if float(result)>float(total) else 'Under'
+        over_under_result = 'Over' if float(result)>float(total) else 'Push' if float(result)==float(total) else 'Under'
     except:
         over_under_result = 'N/A'
     
