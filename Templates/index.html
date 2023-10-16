@@ -528,7 +528,7 @@
                     const winnerEmojiDiv = document.createElement('div');
                     winnerEmojiDiv.className = 'emoji';
 
-                    wrapperDiv.dataset.proba = (moneyline.Probabilities[0] * 100).toFixed(0);
+                    wrapperDiv.dataset.proba = (moneyline.Probabilities[0] * 100).toFixed(1);
                     if (moneyline.Winner[0] === moneyline.Result) {
                         winnerEmojiDiv.textContent = '✅';
                     } 
@@ -578,7 +578,7 @@
                     const overEmojiDiv = document.createElement('div');
                     overEmojiDiv.className = 'emoji';
 
-                    overUnderDiv.dataset.proba = Math.floor(data.over_unders[index]['Probability'][0] * 100).toFixed(0);
+                    overUnderDiv.dataset.proba = Math.floor(data.over_unders[index]['Probability'][0] * 100).toFixed(1);
                     if (data.over_unders[index]['Over/Under'][0] === data.over_unders[index]['Result']) {  
                         overEmojiDiv.textContent = '✅';
                     } 
