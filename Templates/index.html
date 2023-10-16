@@ -579,11 +579,10 @@
                     overEmojiDiv.className = 'emoji';
 
                     overUnderDiv.dataset.proba = Math.floor(data.over_unders[index]['Probability'][0] * 100).toFixed(0);
-                    if (data.over_unders[index]['Over/Under'][0] === data.over_unders[index]['Result']) {
-                        console.log(data.over_unders[index]['Result']);
+                    if (data.over_unders[index]['Over/Under'][0] === data.over_unders[index]['Result']) {  
                         overEmojiDiv.textContent = '✅';
                     } 
-                    else if (data.over_unders[index]['Over/Under'][0] === 'Push') {
+                    else if (data.over_unders[index]['Result'] === 'Push') {
                         overEmojiDiv.textContent = '(PUSH)';
                     }
                     else {
