@@ -1,5 +1,5 @@
 ---
-title: MARCI
+title: MARCI (NFL Betting)
 emoji: 🏈
 colorFrom: red
 colorTo: blue
