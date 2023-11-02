@@ -425,8 +425,17 @@
         }
 
         const columns = ['Date','Away Team', 'Home Team']; 
-        const lines_response = await fetch('/get_lines');
-        const lines = await lines_response.json()
+        let lines;
+        try {
+            const lines_response = await fetch('/get_lines');
+            if (!lines_response.ok) {
+                throw new Error(`HTTP error! status: ${lines_response.status}`);
+            }
+            lines = await lines_response.json();
+        } 
+        catch (error) {
+            lines = new Array(20).fill(0);
+        }
 
         pulled_games.forEach((game, index) => {
             const row = table.insertRow(-1);
