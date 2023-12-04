@@ -1,3 +1,193 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:dba9bb6b4464d0923fccdd8ed42b883ce14a923ee66cddbaa30e5ac21f317848
-size 6731
+game_id,total,winner
+2023_01_ARI_WAS,36,Washington Commanders
+2023_01_BUF_NYJ,38,New York Jets
+2023_01_CAR_ATL,34,Atlanta Falcons
+2023_01_CIN_CLE,27,Cleveland Browns
+2023_01_DAL_NYG,40,Dallas Cowboys
+2023_01_DET_KC,41,Detroit Lions
+2023_01_GB_CHI,58,Green Bay Packers
+2023_01_HOU_BAL,34,Baltimore Ravens
+2023_01_JAX_IND,52,Jacksonville Jaguars
+2023_01_LA_SEA,43,Los Angeles Rams
+2023_01_LV_DEN,33,Las Vegas Raiders
+2023_01_MIA_LAC,70,Miami Dolphins
+2023_01_PHI_NE,45,Philadelphia Eagles
+2023_01_SF_PIT,37,San Francisco 49ers
+2023_01_TB_MIN,37,Tampa Bay Buccaneers
+2023_01_TEN_NO,31,New Orleans Saints
+2023_02_BAL_CIN,51,Baltimore Ravens
+2023_02_CHI_TB,44,Tampa Bay Buccaneers
+2023_02_CLE_PIT,48,Pittsburgh Steelers
+2023_02_GB_ATL,49,Atlanta Falcons
+2023_02_IND_HOU,51,Indianapolis Colts
+2023_02_KC_JAX,26,Kansas City Chiefs
+2023_02_LAC_TEN,51,Tennessee Titans
+2023_02_LV_BUF,48,Buffalo Bills
+2023_02_MIA_NE,41,Miami Dolphins
+2023_02_MIN_PHI,62,Philadelphia Eagles
+2023_02_NO_CAR,37,New Orleans Saints
+2023_02_NYG_ARI,59,New York Giants
+2023_02_NYJ_DAL,40,Dallas Cowboys
+2023_02_SEA_DET,68,Seattle Seahawks
+2023_02_SF_LA,53,San Francisco 49ers
+2023_02_WAS_DEN,68,Washington Commanders
+2023_03_ATL_DET,26,Detroit Lions
+2023_03_BUF_WAS,40,Buffalo Bills
+2023_03_CAR_SEA,64,Seattle Seahawks
+2023_03_CHI_KC,51,Kansas City Chiefs
+2023_03_DAL_ARI,44,Arizona Cardinals
+2023_03_DEN_MIA,90,Miami Dolphins
+2023_03_HOU_JAX,54,Houston Texans
+2023_03_IND_BAL,41,Indianapolis Colts
+2023_03_LAC_MIN,52,Los Angeles Chargers
+2023_03_LA_CIN,35,Cincinnati Bengals
+2023_03_NE_NYJ,25,New England Patriots
+2023_03_NO_GB,35,Green Bay Packers
+2023_03_NYG_SF,42,San Francisco 49ers
+2023_03_PHI_TB,36,Philadelphia Eagles
+2023_03_PIT_LV,41,Pittsburgh Steelers
+2023_03_TEN_CLE,30,Cleveland Browns
+2023_04_ARI_SF,51,San Francisco 49ers
+2023_04_ATL_JAX,30,Jacksonville Jaguars
+2023_04_BAL_CLE,31,Baltimore Ravens
+2023_04_CIN_TEN,30,Tennessee Titans
+2023_04_DEN_CHI,59,Denver Broncos
+2023_04_DET_GB,54,Detroit Lions
+2023_04_KC_NYJ,43,Kansas City Chiefs
+2023_04_LA_IND,52,Los Angeles Rams
+2023_04_LV_LAC,41,Los Angeles Chargers
+2023_04_MIA_BUF,68,Buffalo Bills
+2023_04_MIN_CAR,34,Minnesota Vikings
+2023_04_NE_DAL,41,Dallas Cowboys
+2023_04_PIT_HOU,36,Houston Texans
+2023_04_SEA_NYG,27,Seattle Seahawks
+2023_04_TB_NO,35,Tampa Bay Buccaneers
+2023_04_WAS_PHI,65,Philadelphia Eagles
+2023_05_BAL_PIT,27,Pittsburgh Steelers
+2023_05_CAR_DET,66,Detroit Lions
+2023_05_CHI_WAS,60,Chicago Bears
+2023_05_CIN_ARI,54,Cincinnati Bengals
+2023_05_DAL_SF,52,San Francisco 49ers
+2023_05_GB_LV,30,Las Vegas Raiders
+2023_05_HOU_ATL,40,Atlanta Falcons
+2023_05_JAX_BUF,45,Jacksonville Jaguars
+2023_05_KC_MIN,47,Kansas City Chiefs
+2023_05_NO_NE,34,New Orleans Saints
+2023_05_NYG_MIA,47,Miami Dolphins
+2023_05_NYJ_DEN,52,New York Jets
+2023_05_PHI_LA,37,Philadelphia Eagles
+2023_05_TEN_IND,39,Indianapolis Colts
+2023_06_ARI_LA,35,Los Angeles Rams
+2023_06_BAL_TEN,40,Baltimore Ravens
+2023_06_CAR_MIA,63,Miami Dolphins
+2023_06_DAL_LAC,37,Dallas Cowboys
+2023_06_DEN_KC,27,Kansas City Chiefs
+2023_06_DET_TB,26,Detroit Lions
+2023_06_IND_JAX,57,Jacksonville Jaguars
+2023_06_MIN_CHI,32,Minnesota Vikings
+2023_06_NE_LV,38,Las Vegas Raiders
+2023_06_NO_HOU,33,Houston Texans
+2023_06_NYG_BUF,23,Buffalo Bills
+2023_06_PHI_NYJ,34,New York Jets
+2023_06_SEA_CIN,30,Cincinnati Bengals
+2023_06_SF_CLE,36,Cleveland Browns
+2023_06_WAS_ATL,40,Washington Commanders
+2023_07_ARI_SEA,30,Seattle Seahawks
+2023_07_ATL_TB,29,Atlanta Falcons
+2023_07_BUF_NE,54,New England Patriots
+2023_07_CLE_IND,77,Cleveland Browns
+2023_07_DET_BAL,44,Baltimore Ravens
+2023_07_GB_DEN,36,Denver Broncos
+2023_07_JAX_NO,55,Jacksonville Jaguars
+2023_07_LAC_KC,48,Kansas City Chiefs
+2023_07_LV_CHI,42,Chicago Bears
+2023_07_MIA_PHI,48,Philadelphia Eagles
+2023_07_PIT_LA,41,Pittsburgh Steelers
+2023_07_SF_MIN,39,Minnesota Vikings
+2023_07_WAS_NYG,21,New York Giants
+2023_08_ATL_TEN,51,Tennessee Titans
+2023_08_BAL_ARI,55,Baltimore Ravens
+2023_08_CHI_LAC,43,Los Angeles Chargers
+2023_08_CIN_SF,48,Cincinnati Bengals
+2023_08_CLE_SEA,44,Seattle Seahawks
+2023_08_HOU_CAR,28,Carolina Panthers
+2023_08_JAX_PIT,30,Jacksonville Jaguars
+2023_08_KC_DEN,33,Denver Broncos
+2023_08_LA_DAL,63,Dallas Cowboys
+2023_08_LV_DET,40,Detroit Lions
+2023_08_MIN_GB,34,Minnesota Vikings
+2023_08_NE_MIA,48,Miami Dolphins
+2023_08_NO_IND,65,New Orleans Saints
+2023_08_NYJ_NYG,23,New York Jets
+2023_08_PHI_WAS,69,Philadelphia Eagles
+2023_08_TB_BUF,42,Buffalo Bills
+2023_09_ARI_CLE,27,Cleveland Browns
+2023_09_BUF_CIN,42,Cincinnati Bengals
+2023_09_CHI_NO,41,New Orleans Saints
+2023_09_DAL_PHI,51,Philadelphia Eagles
+2023_09_IND_CAR,40,Indianapolis Colts
+2023_09_LAC_NYJ,33,Los Angeles Chargers
+2023_09_LA_GB,23,Green Bay Packers
+2023_09_MIA_KC,35,Kansas City Chiefs
+2023_09_MIN_ATL,59,Minnesota Vikings
+2023_09_NYG_LV,36,Las Vegas Raiders
+2023_09_SEA_BAL,40,Baltimore Ravens
+2023_09_TB_HOU,76,Houston Texans
+2023_09_TEN_PIT,36,Pittsburgh Steelers
+2023_09_WAS_NE,37,Washington Commanders
+2023_10_ATL_ARI,48,Arizona Cardinals
+2023_10_CAR_CHI,29,Chicago Bears
+2023_10_CLE_BAL,64,Cleveland Browns
+2023_10_DEN_BUF,46,Denver Broncos
+2023_10_DET_LAC,79,Detroit Lions
+2023_10_GB_PIT,42,Pittsburgh Steelers
+2023_10_HOU_CIN,57,Houston Texans
+2023_10_IND_NE,16,Indianapolis Colts
+2023_10_NO_MIN,46,Minnesota Vikings
+2023_10_NYG_DAL,66,Dallas Cowboys
+2023_10_NYJ_LV,28,Las Vegas Raiders
+2023_10_SF_JAX,37,San Francisco 49ers
+2023_10_TEN_TB,26,Tampa Bay Buccaneers
+2023_10_WAS_SEA,55,Seattle Seahawks
+2023_11_ARI_HOU,37,Houston Texans
+2023_11_CHI_DET,57,Detroit Lions
+2023_11_CIN_BAL,54,Baltimore Ravens
+2023_11_DAL_CAR,43,Dallas Cowboys
+2023_11_LAC_GB,43,Green Bay Packers
+2023_11_LV_MIA,33,Miami Dolphins
+2023_11_MIN_DEN,41,Denver Broncos
+2023_11_NYG_WAS,50,New York Giants
+2023_11_NYJ_BUF,38,Buffalo Bills
+2023_11_PHI_KC,38,Philadelphia Eagles
+2023_11_PIT_CLE,23,Cleveland Browns
+2023_11_SEA_LA,33,Los Angeles Rams
+2023_11_TB_SF,41,San Francisco 49ers
+2023_11_TEN_JAX,48,Jacksonville Jaguars
+2023_12_BAL_LAC,30,Baltimore Ravens
+2023_12_BUF_PHI,71,Philadelphia Eagles
+2023_12_CAR_TEN,27,Tennessee Titans
+2023_12_CHI_MIN,22,Chicago Bears
+2023_12_CLE_DEN,41,Denver Broncos
+2023_12_GB_DET,51,Green Bay Packers
+2023_12_JAX_HOU,45,Jacksonville Jaguars
+2023_12_KC_LV,48,Kansas City Chiefs
+2023_12_LA_ARI,51,Los Angeles Rams
+2023_12_MIA_NYJ,47,Miami Dolphins
+2023_12_NE_NYG,17,New York Giants
+2023_12_NO_ATL,39,Atlanta Falcons
+2023_12_PIT_CIN,26,Pittsburgh Steelers
+2023_12_SF_SEA,44,San Francisco 49ers
+2023_12_TB_IND,47,Indianapolis Colts
+2023_12_WAS_DAL,55,Dallas Cowboys
+2023_13_ARI_PIT,34,Arizona Cardinals
+2023_13_ATL_NYJ,21,Atlanta Falcons
+2023_13_CAR_TB,39,Tampa Bay Buccaneers
+2023_13_CLE_LA,55,Los Angeles Rams
+2023_13_DEN_HOU,39,Houston Texans
+2023_13_DET_NO,61,Detroit Lions
+2023_13_IND_TEN,59,Indianapolis Colts
+2023_13_KC_GB,46,Green Bay Packers
+2023_13_LAC_NE,6,Los Angeles Chargers
+2023_13_MIA_WAS,60,Miami Dolphins
+2023_13_SEA_DAL,76,Dallas Cowboys
+2023_13_SF_PHI,61,San Francisco 49ers
