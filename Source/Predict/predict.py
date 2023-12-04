@@ -36,6 +36,11 @@ file_path = os.path.join(pickle_directory, 'schedule.pkl')
 with open(file_path, 'rb') as f:
     schedule = pkl.load(f)
 
+# get current week
+file_path = os.path.join(pickle_directory, 'the_week.pkl')
+with open(file_path, 'rb') as f:
+    the_week = pkl.load(f)
+
 # load models
 # moneyline
 model = 'xgboost_ML_no_odds_71.4%'
@@ -51,36 +56,18 @@ xgb_ou.load_model(file_path)
 
 
 def get_week():
-    headers = {
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-    'Accept-Encoding': 'gzip, deflate',
-    'Accept-Language': 'en-US,en;q=0.9',
-    'Cache-Control': 'max-age=0',
-    'Connection': 'keep-alive',
-    'Dnt': '1',
-    'Upgrade-Insecure-Requests': '1',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36'
-    }
-    url = 'https://www.nfl.com/schedules/'
-    resp = requests.get(url,headers=headers)
-    soup = BeautifulSoup(resp.text, 'html.parser')
-    h2_tags = soup.find_all('h2')
-    year = h2_tags[0].getText().split(' ')[0]
-    week = h2_tags[0].getText().split(' ')[-1]
+    week = the_week['week']
+    year = the_week['year']
     return int(week), int(year)
 
 
 def get_games(week):
-    # pull from NBC
-    #url = 'https://www.nbcsports.com/nfl/schedule'
-    #df = pd.read_html(url)[week-1]
     df = schedule[week-1]
     df['Away Team'] = [' '.join(i.split('\xa0')[1:]) for i in df['Away TeamAway Team']]
     df['Home Team'] = [' '.join(i.split('\xa0')[1:]) for i in df['Home TeamHome Team']]
     df['Date'] = pd.to_datetime(df['Game TimeGame Time'])
     df['Date'] = df['Date'].dt.strftime('%A %d/%m %I:%M %p')
     df['Date'] = df['Date'].apply(lambda x: f"{x.split()[0]} {int(x.split()[1].split('/')[1])}/{int(x.split()[1].split('/')[0])} {x.split()[2]}".capitalize())
-
     return df[['Away Team','Home Team','Date']]
 
 
