@@ -196,6 +196,7 @@ game_id,total,winner
 2023_14_CAR_NO,34,New Orleans Saints
 2023_14_DEN_LAC,31,Denver Broncos
 2023_14_DET_CHI,41,Chicago Bears
+2023_14_GB_NYG,46,New York Giants
 2023_14_HOU_NYJ,36,New York Jets
 2023_14_IND_CIN,48,Cincinnati Bengals
 2023_14_JAX_CLE,58,Cleveland Browns
@@ -205,3 +206,4 @@ game_id,total,winner
 2023_14_PHI_DAL,46,Dallas Cowboys
 2023_14_SEA_SF,44,San Francisco 49ers
 2023_14_TB_ATL,54,Tampa Bay Buccaneers
+2023_14_TEN_MIA,55,Tennessee Titans
