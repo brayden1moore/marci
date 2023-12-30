@@ -1,0 +1,10 @@
+Flask==2.2.5
+requests==2.31.0
+gunicorn==20.1.0
+xgboost==1.7.6
+beautifulsoup4==4.12.2
+pandas==1.5.3
+numpy==1.25.1
+matplotlib==3.7.1
+tqdm==4.65.0
+lxml==4.9.2
